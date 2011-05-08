@@ -1,0 +1,13 @@
+#environment table { border-collapse:collapse; border-spacing:0px 0px; border-style:none; border:0px; }
+
+.habitat { height:10px; width:10px;  }
+.mountain { background:#4d310d; }
+.water { background:#3d48d0; } 
+.tundra { background:#e0e0e0; }
+.taiga { background:#9ba698; }
+.swamp { background:#5be13c; }
+.steppe { background:#ead492; }
+.temperate { background:#5db13f; }
+.scrub { background:#ecc113; }
+.jungle { background:#2f9a13; }
+.desert { background:#ffedb8; }

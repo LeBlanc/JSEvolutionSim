@@ -1,6 +1,9 @@
+$(document).ready( function() {
+
 //console.log(string_multiply("bob ", 5));
 
-var g = new Gene(5, 6, 7, 8, 9, 10);
+
+g = new Gene(5, 6, 7, 8, 9, 10);
 
 g.mutate();
 
@@ -22,11 +25,17 @@ plant1template = {
 	}
 }
 
-var s = new Species(1, plant1template);
-var o1 = s.organism();
-var o2 = s.organism();
+s = new Species(1, plant1template);
+o1 = s.organism();
+o2 = s.organism();
 
 l(o1);
 l(o2);
-var o3 = o1.mate(o2);
+o3 = o1.mate(o2);
 l(o3);
+
+e = new Environment("#environment table tbody", 100, 100);
+
+l(e);
+
+});
