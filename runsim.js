@@ -21,7 +21,8 @@ plant1template = {
 		"mature_age": 30,
 		"flowering_rate": 15,
 		"sprout_temperature": 70,
-		"sprout_water": 30
+		"sprout_water": 30,
+		"mutation_rate": 0.001
 	}
 }
 

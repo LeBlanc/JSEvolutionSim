@@ -10,7 +10,7 @@ function Environment(canvas, x, y) {
 	
 	this.generate = function(canvas) {
 		var moisture = this.random_sources(10, 15, 350, -100);
-		var mountains = this.random_sources(10, 20, 0, 100);
+		var mountains = this.random_sources(20, 80, -150, 200);
 		var soil = this.random_sources(20, 40, 0, 100);
 		var temperature = this.random_sources(20, 40, 200, -100);
 	
