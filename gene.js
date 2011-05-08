@@ -4,11 +4,10 @@ Gene Class
 
 */
 
-function Gene(id, position, chromosome, attribute, effect, dominance) 
+function Gene(id, position, attribute, effect, dominance) 
 {
 	this.id = id;
 	this.position = position;
-	this.chromosome = chromosome;
 	this.attribute = attribute;
 	this.effect = effect;
 	this.dominance = dominance;
@@ -29,7 +28,7 @@ function Gene(id, position, chromosome, attribute, effect, dominance)
 	}	
 
 	this.to_string = function() {
-		return Object.toJSON(this.to_json());
+		return JSON.stringify(this.to_json());
 	}
 
 	
@@ -48,7 +47,20 @@ function Gene(id, position, chromosome, attribute, effect, dominance)
 		return n;
 	}
 
-	this.mutate = function() {
-		return this;
+	this.mutate = function(mutation_rate) {
+		/*
+		var bp = this.to_bp();
+		var np = ["A", "G", "T", "C"];
+		for (var i = 0; i < bp.length; i++) {
+			if (mutation_rate > Math.random()) {
+				var mutation_type = Math.random();
+				if (mutation_type > 0.01) {
+					bp[i] = np[rand(4)];
+				} else {
+					bp = bp.slice(0, i) + bp.slice(i + 1);
+				}
+			}
+		} */
+		return new Gene(this.id, this.position, this.attribute, (Math.random() / 10.0 + .95) * this.effect, rand(2));
 	}
 }

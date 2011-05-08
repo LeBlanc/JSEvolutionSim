@@ -45,3 +45,29 @@ function json_to_gene(json) {
 	return g = new Gene(json.id, json.position, json.chromosome, json.attribute, json.effect, json.dominance);
 
 }
+
+function l(object) {
+	console.log(object);
+}
+
+function rand(num) {
+	return Math.floor(Math.random() * num );
+}
+
+function rand_element(array) {
+	return array[rand(array.length) ];
+}
+
+function rand_empty(array, len) {
+	for (var i = 0; i < len; i++) {
+		var x = rand(len);
+		if (typeof array[x] == 'undefined') {
+			return x;
+		}
+	}
+	return false;
+}
+
+function rand_standard(base, multiply) {
+	return multiply * ( (Math.random()*2-1)+(Math.random()*2-1)+(Math.random()*2-1) + (Math.random()*2-1)+(Math.random()*2-1)+(Math.random()*2-1) ) + base;
+}

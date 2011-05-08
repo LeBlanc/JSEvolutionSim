@@ -1,0 +1,30 @@
+
+
+ATTRIBUTES
+	ANIMAL
+		turn speed
+		color 1
+		color 2
+		color 3
+		sex appeal
+		sex standards
+		mutation rate
+		virility
+		litter size
+		max size
+		baby size
+		gestation time
+		mature age
+		lifespan
+		herbivore
+		carnivore
+	PLANT
+		turn speed
+		color 1
+		color 2
+		color 3
+		mature age
+		flowering rate
+		sprout temperature
+		sprout water
+	
