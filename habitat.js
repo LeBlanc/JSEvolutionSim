@@ -2,7 +2,7 @@
  * Habitat Class
  */
 
-function Habitat(element, x ,y, moisture, height, temperature, soil) {
+function Habitat(element, environment, x ,y, moisture, height, temperature, soil) {
 	this.element = element;
 	this.x = x;
 	this.y = y;
@@ -10,6 +10,8 @@ function Habitat(element, x ,y, moisture, height, temperature, soil) {
 	this.height = height;
 	this.temperature = temperature;
 	this.soil = soil;
+	this.organisms = [];
+	this.environment = environment;
 
 	
 
@@ -68,7 +70,11 @@ function Habitat(element, x ,y, moisture, height, temperature, soil) {
 	}
 
 
-	this.render = function() {
-		
+	this.render = function() { 
+		if (this.organisms.length > 0 ) {
+			$(this.element).addClass('organism');
+		} else {
+			$(this.element).removeClass('organism');
+		}
 	}
 }

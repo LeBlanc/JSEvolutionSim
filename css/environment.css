@@ -1,6 +1,10 @@
-#environment table { border-collapse:collapse; border-spacing:0px 0px; border-style:none; border:0px; }
+#environment table { border-collapse:collapse; border-spacing:0px 0px; border-style:none; border:0px; float:left; }
+.info { float:right; width:200px; height:200px; border:1px solid black; margin-bottom:15px; }
 
-.habitat { height:10px; width:10px;  }
+.habitat { height:10px; width:10px; margin:0px; padding:0px; }
+.habitat.active { background:red; }
+.selector { border:1px solid red; margin:0px; padding:0px; height:8px; width:8px; }
+
 .mountain { background:#4d310d; }
 .water { background:#3d48d0; } 
 .tundra { background:#e0e0e0; }
@@ -11,3 +15,9 @@
 .scrub { background:#ffedb8; }
 .jungle { background:#2f9a13; }
 .desert { background:#ecc113; }
+
+.organism { background:red !important; } 
+
+.info { }
+.info dt { display:inline-block; width:60px;  }
+.info dd { display:inline-block; width:50px; }

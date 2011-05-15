@@ -2,41 +2,34 @@ $(document).ready( function() {
 
 //console.log(string_multiply("bob ", 5));
 
+sim = new Simulation(100, 100);
 
-g = new Gene(5, 6, 7, 8, 9, 10);
+$.fn.get_habitat = function() {
+	var id = $(this).attr('id');
+	var x = id.substring( id.indexOf(':') + 1, id.indexOf(','));
+	var y = id.substring( id.indexOf(',') + 1);
+	return sim.environment.habitats[x][y];
+}
 
-g.mutate();
+function display_habitat(habitat) {
+	$("#habitat_info dd.position").text(habitat.x + "," + habitat.y);
+	$("#habitat_info dd.type").text(habitat.type);
+	$("#habitat_info dd.height").text(habitat.height.toFixed(2));
+	$("#habitat_info dd.moisture").text(habitat.moisture.toFixed(2));
+	$("#habitat_info dd.soil").text(habitat.soil.toFixed(2));
+	$("#habitat_info dd.temperature").text(habitat.temperature.toFixed(2));
 
-
-
-
-plant1template = { 
-	"species_name": "grass",
-	"chromosome_count": 5,
-	"attributes": {
-		"turn_speed": 1,
-		"color_1": "130",
-		"color_2": "170",
-		"color_3": "150",
-		"mature_age": 30,
-		"flowering_rate": 15,
-		"sprout_temperature": 70,
-		"sprout_water": 30,
-		"mutation_rate": 0.001
+	if (habitat.organisms.length > 0) {
+		l(habitat);
 	}
 }
 
-s = new Species(1, plant1template);
-o1 = s.organism();
-o2 = s.organism();
+$('.habitat').mouseover( function() { $(this).append($("#selector")); display_habitat($(this).get_habitat()); });
+$('.habitat').mouseout( function() {  });
 
-l(o1);
-l(o2);
-o3 = o1.mate(o2);
-l(o3);
 
-e = new Environment("#environment table tbody", 100, 100);
 
-l(e);
+
+
 
 });

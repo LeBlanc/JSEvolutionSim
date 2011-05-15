@@ -71,3 +71,8 @@ function rand_empty(array, len) {
 function rand_standard(base, multiply) {
 	return multiply * ( (Math.random()*2-1)+(Math.random()*2-1)+(Math.random()*2-1) + (Math.random()*2-1)+(Math.random()*2-1)+(Math.random()*2-1) ) + base;
 }
+
+function time() {
+	var time = new Date();
+	return time.getTime();
+}

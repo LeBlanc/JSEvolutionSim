@@ -3,12 +3,14 @@
  *
  */
 
-function Species(id, input)
+function Species(id, input, environment, simulation)
 {
 	this.id = id;
 	this.species_name = input.species_name;
 	this.attributes = input.attributes;
 	this.chromosome_count = input.chromosome_count;
+	this.environment = environment;
+	this.sim = simulation;
 
 
 	
@@ -52,7 +54,9 @@ function Species(id, input)
 	}
 
 	this.organism = function() {
-		return new Organism(0, this, this.nucleus());
+		var o = new Organism(this.sim.org_count, this, this.nucleus(), this.environment.random_habitat());
+		this.sim.org_count += 1;
+		return o;
 	}
 
 	this.population = function(size) {
