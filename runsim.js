@@ -2,12 +2,12 @@ $(document).ready( function() {
 
 //console.log(string_multiply("bob ", 5));
 
-sim = new Simulation(100, 100);
+sim = new Simulation(100, 60);
 
 $.fn.get_habitat = function() {
 	var id = $(this).attr('id');
-	var x = id.substring( id.indexOf(':') + 1, id.indexOf(','));
-	var y = id.substring( id.indexOf(',') + 1);
+	var x = id.substring( id.indexOf('habitat') + 7, id.indexOf('_'));
+	var y = id.substring( id.indexOf('_') + 1);
 	return sim.environment.habitats[x][y];
 }
 

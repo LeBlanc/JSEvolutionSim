@@ -10,7 +10,11 @@ function Organism(id, species, pairs, habitat) {
 	this.attributes = {};
 	this.habitat = habitat;
 	this.age = 0; 
+	this.food = 1;
 	this.babies_had = 0;
+	this.interval = null;
+	this.parents = [];
+	this.children = [];
 	if (habitat)
 		this.habitat.organisms.push(this);
 	
@@ -46,6 +50,7 @@ function Organism(id, species, pairs, habitat) {
 				var c = this.chromosomes[i].c2;
 			}
 			var cn = new Chromosome(0, 0, c.genes);
+			cn.mutate(this.attributes["mutation_rate"]);
 			gamete[i] = cn;
 		}
 		return gamete;
@@ -77,41 +82,77 @@ function Organism(id, species, pairs, habitat) {
 		}
 	}
 
-	this.start = function() {
-		
+	this.start = function(habitat) {
+		this.habitat = habitat;
+		this.x = this.habitat.x;
+		this.y = this.habitat.y;
+		this.habitat.organisms.push(this);
+		this.id = organisms.length;
+		organisms.push(this);
+		this.interval = window.setInterval("organisms[" + this.id + "].run()",500);
 	}
 
-	this.run = function() {
+	this.die = function() {
+		this.dead = true;
+		window.clearInterval(this.interval);
+		this.habitat.remove_organism(this);
+	}
+
+	this.run = function() { var start = time();
+		if (this.age > this.attributes["longevity"]) {
+			this.die();
+			return;
+		}
+		if(this.babies_had > this.attributes["virility"] && rand(100) > 75 ) {
+			this.die();
+			return;
+		}
+		if (this.food < 0) {
+			this.die();
+			return;
+		}
+		this.eat();
+		this.food -= 1;
 		this.move(rand(3) - 1,rand(3) - 1);
 		if (this.habitat.organisms.length > 1 && this.habitat.organisms.length < 5) {
 			for (var i = 0; i < this.habitat.organisms.length; i++) {
 				var partner = this.habitat.organisms[i];
 				if (this.can_mate(partner)) {
 					var baby = this.mate(partner);
-					baby.id = organisms.length;
-					organisms.push(baby);
-					baby.habitat = this.habitat;
-					baby.x = this.habitat.x;
-					baby.y = this.habitat.y;
-					baby.habitat.organisms.push(baby);
-					window.setInterval("organisms[" + baby.id + "].run()",500);
+					baby.start(this.habitat);
+					this.children.push(baby);
+					partner.children.push(baby);
+					baby.parents.push(this, partner);
 				}
 			}
 		}
 		this.age += 1;
+		if (time() - start > 490)
+			l(time() - start);
 	}
 
 	this.move = function(x,y) {
 		this.x = this.habitat.x;
 		this.y = this.habitat.y;
-		var current_index = this.habitat.organisms.indexOf(this);
+		
 		var habitats = this.habitat.environment.habitats;
 		if (habitats[this.x + x] && habitats[this.x + x][this.y + y]) {
-			this.habitat.organisms.splice(current_index - 1, 1);
+			this.habitat.remove_organism(this);
 			this.habitat = habitats[this.x + x][this.y + y];
 			this.habitat.organisms.push(this);
 			this.x += x;
 			this.y += y;
 		}
+	}
+
+	this.eat = function() {
+		if (this.food < 5 && this.habitat.food > 0) {
+			this.habitat.food -= 1;
+			this.food += 1;
+		}
+	}
+
+	this.color = function() {
+		return 'rgb('+ this.attributes["color_1"].toFixed(0) +',' + this.attributes["color_2"].toFixed(0)  +',' + this.attributes["color_3"].toFixed(0)  +');';
 	}
 }

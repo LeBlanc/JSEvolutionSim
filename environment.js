@@ -44,7 +44,7 @@ function Environment(canvas, x, y) {
 
 	this.make_habitat = function(x, y) {
 		var td = document.createElement('td');
-		td.setAttribute('id', 'habitat:' + x +',' + y);
+		td.setAttribute('id', 'habitat' + x +'_' + y);
 		return new Habitat(td, this, x, y, 0,0,0,0); 
 	};
 
@@ -89,6 +89,7 @@ function Environment(canvas, x, y) {
 	this.render = function() { 
 		for (var xx = 0; xx < this.x; xx++) {
 			for (var yy = 0; yy < this.y; yy++) {
+				this.habitats[xx][yy].iterate();
 				this.habitats[xx][yy].render();
 			}
 		}

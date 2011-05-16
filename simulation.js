@@ -24,7 +24,8 @@ function Simulation(x, y) {
 		"flowering_rate": 15,
 		"sprout_temperature": 70,
 		"sprout_water": 30,
-		"mutation_rate": 0.001
+		"mutation_rate": 0.1,
+		"longevity": 100
 	}
 }
 
@@ -49,19 +50,30 @@ this.start = function() {
 	}
 }
 
-
+var last_turn = time();
 this.run = function() { 
-	var start = time();
-	l("turn: " + this.turn);
+	//l("turn: " + this.turn);
 	sim.environment.render();
-	l("size: " + organisms.length);
+	//l("size: " + organisms.length);
 	this.turn += 1;
-	l(time() - start);
-	l('------------');
+	//l(time() - last_turn);
+	last_turn = time();
+	//l('------------');
 }
 
 
 window.setInterval("sim.run()",500);
+
+this.alive_organisms = function() {
+	var all = organisms.length;
+	var dead = 0;
+	for (var i = 0; i < organisms.length; i++) {
+		if (organisms[i].dead) {
+			dead += 1;
+		}
+	}
+	return all - dead;
+}
 
 
 this.start();

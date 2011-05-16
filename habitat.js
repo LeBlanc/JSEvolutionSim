@@ -12,6 +12,7 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 	this.soil = soil;
 	this.organisms = [];
 	this.environment = environment;
+	this.food = 0;
 
 	
 
@@ -71,10 +72,31 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 
 
 	this.render = function() { 
-		if (this.organisms.length > 0 ) {
-			$(this.element).addClass('organism');
+		/*if (this.organisms.length > 0 ) {
+			var o = this.organisms[0];
+			var color = 'rgb('+ o.attributes["color_1"] +',' + o.attributes["color_2"]  +',' + o.attributes["color_3"]  +')';
+			$(this.element).css('background-color', color);
+			l($(this.element).css('background-color'));
+			l($(this.element));
 		} else {
-			$(this.element).removeClass('organism');
+			$(this.element).css('');
+		}*/
+		if (this.organisms.length > 0 ) {
+			var o = this.organisms[0];
+			var color = o.color();
+			this.element.setAttribute('style', 'background-color:'+ color);
+		} else {
+			this.element.setAttribute('style', '');
 		}
+	};
+
+	this.remove_organism = function(org) {
+		var index = this.organisms.indexOf(org);
+		this.organisms.splice(index, 1);
+	};
+
+	this.iterate = function() {
+		if (this.food < 3)
+			this.food += 1;
 	}
 }
