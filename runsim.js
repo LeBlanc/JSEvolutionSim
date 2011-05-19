@@ -1,3 +1,7 @@
+var sim;
+var organisms;
+var dolog = true;
+
 $(document).ready( function() {
 
 //console.log(string_multiply("bob ", 5));

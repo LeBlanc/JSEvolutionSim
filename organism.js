@@ -87,18 +87,28 @@ function Organism(id, species, pairs, habitat) {
 		this.x = this.habitat.x;
 		this.y = this.habitat.y;
 		this.habitat.organisms.push(this);
-		this.id = organisms.length;
-		organisms.push(this);
-		this.interval = window.setInterval("organisms[" + this.id + "].run()",500);
+		sim.add_organism(this);
+		
 	}
 
 	this.die = function() {
 		this.dead = true;
-		window.clearInterval(this.interval);
+		this.death_time = time();
+		delete sim.organisms[id];
 		this.habitat.remove_organism(this);
 	}
 
-	this.run = function() { var start = time();
+	this.run = function() {	
+		if (this.dead) {
+			delete sim.organisms[id];
+			return;
+		}
+		
+		//var string = "sim.run_organism(" + this.id + ")";
+		//var interval = setTimeout(string,500);
+	
+		var start = time();
+	
 		if (this.age > this.attributes["longevity"]) {
 			this.die();
 			return;

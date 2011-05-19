@@ -47,7 +47,8 @@ function json_to_gene(json) {
 }
 
 function l(object) {
-	console.log(object);
+	if (dolog)
+		console.log(object);
 }
 
 function rand(num) {
