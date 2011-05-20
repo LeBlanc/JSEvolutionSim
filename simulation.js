@@ -63,7 +63,7 @@ this.environment.render();
 this.start = function() {
 	this.environment.render();
 
-	for (var i = 0; i < 200; i++) {
+	for (var i = 0; i < 400; i++) {
 		var o = s.organism();
 		this.add_organism(o);
 	}
