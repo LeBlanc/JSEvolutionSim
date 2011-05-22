@@ -15,6 +15,8 @@ function Organism(id, species, pairs, habitat) {
 	this.interval = null;
 	this.parents = [];
 	this.children = [];
+	
+	
 	if (habitat)
 		this.habitat.organisms.push(this);
 	
@@ -40,6 +42,7 @@ function Organism(id, species, pairs, habitat) {
 		this.attributes = attributes;
 	}
 	this.calculate_attributes();
+	this.species.organisms.push(this);
 
 	this.meoisis = function() {
 		var gamete = [];
@@ -94,13 +97,14 @@ function Organism(id, species, pairs, habitat) {
 	this.die = function() {
 		this.dead = true;
 		this.death_time = time();
-		delete sim.organisms[id];
+		//delete sim.organisms[id];
+		this.species.remove_organism(this);
 		this.habitat.remove_organism(this);
 	}
 
 	this.run = function() {	
 		if (this.dead) {
-			delete sim.organisms[id];
+			
 			return;
 		}
 		
@@ -124,15 +128,15 @@ function Organism(id, species, pairs, habitat) {
 		this.eat();
 		this.food -= 1;
 		this.move(rand(3) - 1,rand(3) - 1);
-		if (this.habitat.organisms.length > 1 && this.habitat.organisms.length < 5) {
+		if (this.habitat.organisms.length > 1 && this.habitat.organisms.length < 4) {
 			for (var i = 0; i < this.habitat.organisms.length; i++) {
 				var partner = this.habitat.organisms[i];
 				if (this.can_mate(partner)) {
 					var baby = this.mate(partner);
 					baby.start(this.habitat);
-					this.children.push(baby);
-					partner.children.push(baby);
-					baby.parents.push(this, partner);
+					//this.children.push(baby);
+					//partner.children.push(baby);
+					//baby.parents.push(this, partner);
 				}
 			}
 		}
@@ -146,7 +150,7 @@ function Organism(id, species, pairs, habitat) {
 		this.y = this.habitat.y;
 		
 		var habitats = this.habitat.environment.habitats;
-		if (habitats[this.x + x] && habitats[this.x + x][this.y + y]) {
+		if (habitats[this.x + x] && habitats[this.x + x][this.y + y] && habitats[this.x + x][this.y + y].type != 'water' && habitats[this.x + x][this.y + y].type != 'mountain') {
 			this.habitat.remove_organism(this);
 			this.habitat = habitats[this.x + x][this.y + y];
 			this.habitat.organisms.push(this);
@@ -156,7 +160,17 @@ function Organism(id, species, pairs, habitat) {
 	}
 
 	this.eat = function() {
-		if (this.food < 5 && this.habitat.food > 0) {
+		if (this.food < 2 && this.habitat.organisms.length > 1) {
+			for (var i = 0; i < this.habitat.organisms.length; i++) {
+				var prey = this.habitat.organisms[i];
+				if (this != prey && this.species != prey.species) {
+					//prey.die();
+					this.food += 5;
+				}
+			}
+		}
+	
+		if (this.food < 10 && this.habitat.food > 0) {
 			this.habitat.food -= 1;
 			this.food += 1;
 		}

@@ -9,29 +9,51 @@ function Simulation(x, y) {
 	this.environment = new Environment("", x,y);
 	this.org_count = 0;
 	this.turn = 0;
+	this.species = [];
 
 
 	plant1template = { 
-	"species_name": "grass",
+	"species_name": "cow",
 	"chromosome_count": 5,
 	"attributes": {
 		"turn_speed": 1,
 		"color_1": "130",
 		"color_2": "170",
 		"color_3": "150",
-		"mature_age": 10,
+		"mature_age": 25,
 		"virility": 2,
 		"flowering_rate": 15,
 		"sprout_temperature": 70,
 		"sprout_water": 30,
-		"mutation_rate": 0.10,
+		"mutation_rate": 0.02,
 		"longevity": 100
 	}
 }
 
-s = new Species(1, plant1template, this.environment, this);
+plant2template = { 
+	"species_name": "wolf",
+	"chromosome_count": 10,
+	"attributes": {
+		"turn_speed": 1,
+		"color_1": "130",
+		"color_2": "170",
+		"color_3": "150",
+		"mature_age": 25,
+		"virility": 2,
+		"flowering_rate": 15,
+		"sprout_temperature": 70,
+		"sprout_water": 30,
+		"mutation_rate": 0.12,
+		"longevity": 100
+	}
+}
 
-this.l = true;
+s1 = new Species(1, plant1template, this.environment, this);
+this.species.push(s1);
+
+s2 = new Species(1, plant2template, this.environment, this);
+this.species.push(s2);
+
 
 this.run_organism = function(id) {
 	var o = this.organisms[id];
@@ -64,8 +86,10 @@ this.start = function() {
 	this.environment.render();
 
 	for (var i = 0; i < 400; i++) {
-		var o = s.organism();
-		this.add_organism(o);
+		var o1 = s1.organism();
+		this.add_organism(o1);
+		var o2 = s2.organism();
+		this.add_organism(o2);
 	}
 	l(1);
 	window.setInterval("sim.run()",400);

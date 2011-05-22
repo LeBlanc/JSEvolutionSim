@@ -22,7 +22,8 @@ function display_habitat(habitat) {
 	$("#habitat_info dd.moisture").text(habitat.moisture.toFixed(2));
 	$("#habitat_info dd.soil").text(habitat.soil.toFixed(2));
 	$("#habitat_info dd.temperature").text(habitat.temperature.toFixed(2));
-
+	$("#habitat_info dd.food").text(habitat.food.toFixed(2));
+	$("#habitat_info dd.organism_count").text(habitat.organisms.length);
 	if (habitat.organisms.length > 0) {
 		l(habitat);
 	}
