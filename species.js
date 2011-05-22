@@ -11,6 +11,7 @@ function Species(id, input, environment, simulation)
 	this.chromosome_count = input.chromosome_count;
 	this.environment = environment;
 	this.sim = simulation;
+	this.organisms = [];
 
 
 	
@@ -26,7 +27,7 @@ function Species(id, input, environment, simulation)
 
 	var chromosomes = this.chromosomes;
 	$.each(this.attributes, function(attr, val) { 
-		for (var i=0; i < Math.floor(Math.random()*3) + 1; i++) {
+		for (var i=0; i < Math.floor(Math.random()*5) + 1; i++) {
 			var c = rand_element(chromosomes);
 			var pos = rand_empty(c.genes, 100);
 			var g = new Gene(0, pos, attr, val, rand(2));
@@ -63,5 +64,19 @@ function Species(id, input, environment, simulation)
 
 
 	}
+
+	this.average_attribute = function(attribute) {
+		var total = 0;
+
+		for (var i = 0; i < this.organisms.length; i++) {
+			total += this.organisms[i].attributes[attribute];
+		}
+		return total / this.organisms.length;
+	}
+
+	this.remove_organism = function(org) {
+		var index = this.organisms.indexOf(org);
+		this.organisms.splice(index, 1);
+	};
 
 }
