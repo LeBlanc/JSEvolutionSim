@@ -72,15 +72,6 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 
 
 	this.render = function() { 
-		/*if (this.organisms.length > 0 ) {
-			var o = this.organisms[0];
-			var color = 'rgb('+ o.attributes["color_1"] +',' + o.attributes["color_2"]  +',' + o.attributes["color_3"]  +')';
-			$(this.element).css('background-color', color);
-			l($(this.element).css('background-color'));
-			l($(this.element));
-		} else {
-			$(this.element).css('');
-		}*/
 		if (this.organisms.length > 0 ) {
 			var o = this.organisms[0];
 			var color = o.color();
@@ -97,6 +88,6 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 
 	this.iterate = function() {
 		if (this.food < 3)
-			this.food += 1;
+			this.food += this.soil / 50.0;
 	}
 }
