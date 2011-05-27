@@ -79,4 +79,14 @@ function Species(id, input, environment, simulation)
 		this.organisms.splice(index, 1);
 	};
 
+	this.stats = function() {
+		var stats = {};
+		var species = this;
+		$.each(this.attributes, function(attribute, value) { 
+			stats[attribute] = species.average_attribute(attribute);
+		});
+		stats['population_size'] = this.organisms.length;
+		return averages;
+	}
+
 }
