@@ -37,7 +37,7 @@ plant2template = {
 		"turn_speed": 1,
 		"color_1": "030",
 		"color_2": "170",
-		"color_3": "050",
+		"color_3": "250",
 		"mature_age": 25,
 		"virility": 2,
 		"flowering_rate": 15,
