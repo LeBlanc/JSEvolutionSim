@@ -35,9 +35,9 @@ plant2template = {
 	"chromosome_count": 10,
 	"attributes": {
 		"turn_speed": 1,
-		"color_1": "130",
+		"color_1": "030",
 		"color_2": "170",
-		"color_3": "150",
+		"color_3": "050",
 		"mature_age": 25,
 		"virility": 2,
 		"flowering_rate": 15,
