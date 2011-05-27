@@ -86,7 +86,7 @@ function Species(id, input, environment, simulation)
 			stats[attribute] = species.average_attribute(attribute);
 		});
 		stats['population_size'] = this.organisms.length;
-		return averages;
+		return stats;
 	}
 
 }
