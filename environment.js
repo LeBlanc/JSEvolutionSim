@@ -11,7 +11,7 @@ function Environment(canvas, x, y) {
 	this.generate = function(canvas) {
 		var moisture = this.random_sources(10, 15, 350, -100);
 		var mountains = this.random_sources(20, 80, 50, -20);
-		var soil = this.random_sources(20, 40, -10, 100);
+		var soil = this.random_sources(20, 40, -10, 110);
 		var temperature = this.random_sources(20, 40, 200, -100);
 	
 		canvas = ($("#environment table tbody"));

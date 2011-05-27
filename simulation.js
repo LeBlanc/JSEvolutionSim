@@ -25,7 +25,7 @@ function Simulation(x, y) {
 		"flowering_rate": 15,
 		"sprout_temperature": 70,
 		"sprout_water": 30,
-		"mutation_rate": 0.02,
+		"mutation_rate": 0.002,
 		"longevity": 100
 	}
 }
@@ -43,7 +43,7 @@ plant2template = {
 		"flowering_rate": 15,
 		"sprout_temperature": 70,
 		"sprout_water": 30,
-		"mutation_rate": 0.12,
+		"mutation_rate": 0.02,
 		"longevity": 100
 	}
 }
@@ -85,7 +85,7 @@ this.environment.render();
 this.start = function() {
 	this.environment.render();
 
-	for (var i = 0; i < 400; i++) {
+	for (var i = 0; i < 800; i++) {
 		var o1 = s1.organism();
 		this.add_organism(o1);
 		var o2 = s2.organism();
