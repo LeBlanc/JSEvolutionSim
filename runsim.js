@@ -29,10 +29,32 @@ function display_habitat(habitat) {
 	}
 }
 
-$('.habitat').mouseover( function() { $(this).append($("#selector")); display_habitat($(this).get_habitat()); });
-$('.habitat').mouseout( function() {  });
 
 
+function display_info(object, parent) {
+	if (!parent)
+		parent = $("#info");
+	parent.append(object.info());
+}
+
+function flush_display(parent) {
+	if (!parent) {
+		parent = $("#info"); l('f');}
+	parent.html('');
+}
+
+
+
+$('.habitat').click( function() { flush_display($("#habitat_info")); $(this).append($("#selector")); display_info($(this).get_habitat(), $("#habitat_info") ); });
+
+
+$("#run").click( function() { 
+	if (sim.paused) {
+		sim.paused = false;
+	} else {
+		sim.paused = true;
+	}
+});
 
 
 

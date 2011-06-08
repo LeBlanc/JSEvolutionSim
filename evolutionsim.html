@@ -18,6 +18,16 @@
 
 <body>
 
+<div id="topbar">
+	<div id="controls">
+		<a id="run">Pause</a>
+	</div>
+	<div id="select">
+		<a id="species">
+			Species View
+		</a>
+	</div>
+</div>
 
 <div id="environment">
 	<table border="0">
@@ -27,6 +37,29 @@
 </div>
 
 <div id="info">
+	<div class="info" id="habitat_info">
+
+	</div>
+	<div class="info" id="organism_info">
+		<dl>
+			<dt>Organism</dt>
+				<dd class="org_id"></dd>
+			<dt>Position</dt>
+				<dd class="position"></dd>
+			<dt>Species</dt>
+				<dd class="species"></dd>
+			<dt>Energy</dt>
+				<dd class="energy"></dd>
+		</dl>
+	</div>
+</div>
+
+<div id="selector" class="selector"></div>
+
+
+
+
+<div style="display:none;">
 	<div class="info" id="habitat_info">
 		<dl>
 			<dt>Habitat</dt>
@@ -47,21 +80,10 @@
 				<dd class="organism_count"></dt>
 		</dl>
 	</div>
-	<div class="info" id="organism_info">
-		<dl>
-			<dt>Organism</dt>
-				<dd class="org_id"></dd>
-			<dt>Position</dt>
-				<dd class="position"></dd>
-			<dt>Species</dt>
-				<dd class="species"></dd>
-			<dt>Energy</dt>
-				<dd class="energy"></dd>
-		</dl>
-	</div>
+
+
 </div>
 
-<div id="selector" class="selector"></div>
 </body>
 
 </html>

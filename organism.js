@@ -2,7 +2,7 @@
  Organism Class
 */
 
-function Organism(id, species, pairs, habitat) {
+function Organism(id, species, pairs, habitat, size) {
 
 	this.id = id;
 	this.species = species;
@@ -15,6 +15,8 @@ function Organism(id, species, pairs, habitat) {
 	this.interval = null;
 	this.parents = [];
 	this.children = [];
+	this.size = size ? size : 1;
+
 	
 	
 	if (habitat)
@@ -112,6 +114,8 @@ function Organism(id, species, pairs, habitat) {
 		//var interval = setTimeout(string,500);
 	
 		var start = time();
+
+
 	
 		if (this.age > this.attributes["longevity"]) {
 			this.die();
@@ -125,9 +129,18 @@ function Organism(id, species, pairs, habitat) {
 			this.die();
 			return;
 		}
+
+		if (time() - this.last_turn < this.attributes["turn_speed"]) {
+			return;
+		}
+		
 		this.eat();
 		this.food -= 1;
-		this.move(rand(3) - 1,rand(3) - 1);
+		if (this.attributes["carnivore"] > 10 )
+			this.predator_move();
+		else
+			this.move(rand(3) - 1,rand(3) - 1);
+
 		if (this.habitat.organisms.length > 1 && this.habitat.organisms.length < 4) {
 			for (var i = 0; i < this.habitat.organisms.length; i++) {
 				var partner = this.habitat.organisms[i];
@@ -141,6 +154,8 @@ function Organism(id, species, pairs, habitat) {
 			}
 		}
 		this.age += 1;
+		this.last_turn = time();
+		
 		if (time() - start > 490)
 			l(time() - start);
 	}
@@ -160,17 +175,18 @@ function Organism(id, species, pairs, habitat) {
 	}
 
 	this.eat = function() {
-		if (this.food < 2 && this.habitat.organisms.length > 1) {
+	
+		if (this.attributes["carnivore"] > 10 && this.food < 15 && this.habitat.organisms.length > 1) {
 			for (var i = 0; i < this.habitat.organisms.length; i++) {
 				var prey = this.habitat.organisms[i];
-				if (this != prey && this.species != prey.species) {
-					//prey.die();
-					this.food += 5;
+				if (this.species != prey.species) {
+					prey.die();
+					this.food += prey.food + 5;
 				}
 			}
 		}
 	
-		if (this.food < 10 && this.habitat.food > 0) {
+		if (this.attributes["herbivore"] > 10 && this.food < 10 && this.habitat.food > 0) {
 			this.habitat.food -= 1;
 			this.food += 1;
 		}
@@ -178,5 +194,60 @@ function Organism(id, species, pairs, habitat) {
 
 	this.color = function() {
 		return 'rgb('+ this.attributes["color_1"].toFixed(0) +',' + this.attributes["color_2"].toFixed(0)  +',' + this.attributes["color_3"].toFixed(0)  +');';
+	}
+
+	this.find_prey = function() {
+		var habitats = this.habitat.neighbors();
+		while (habitats.length > 1) {
+			var r = rand(habitats.length);
+			var habitat = habitats[r];
+			for (var x = 0; x < habitat.organisms.length; x++) {
+				var o = habitat.organisms[x];
+				if (o.species != this.species) {
+					return habitat;
+				}
+			}
+			habitats.splice(habitats.indexOf(habitat), 1);
+		}
+		return habitats[0];
+	}
+
+	this.predator_move = function() {
+		var habitat = this.find_prey();
+		this.move(habitat.x - this.x, habitat.y - this.y);	
+	}
+
+	this.info = function() {
+		var dl = document.createElement("dl");
+		jQuery.each(this,  function(index, element) {
+			if (typeof element != 'function' ) {
+				var dt = document.createElement("dt");
+				var dd = document.createElement("dd");
+				dt.textContent = index;
+				l(index);
+				l(typeof element);
+				l("");
+				if (!element)
+					continue;
+				
+				if (typeof element == 'number') {
+					dd.textContent = element.toFixed(2);
+				} else if (typeof element == 'object' && typeof element.info == 'function') {l('x');
+					dd.innerHTML = '<a>' +  element + '</a>';
+				} else if (typeof element == 'object' && element[0] && typeof element[0].info == 'function') {
+					dd.textContent = index;
+				} else if (typeof element == 'string') {
+					dd.textContent = element;
+				} else if (typeof element == 'array') {
+					
+				} else {
+					return;
+				}
+				
+				dl.appendChild(dt);
+				dl.appendChild(dd);
+			}
+		});
+		return dl;
 	}
 }

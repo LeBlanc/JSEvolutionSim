@@ -90,4 +90,45 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 		if (this.food < 3)
 			this.food += this.soil / 50.0;
 	}
+
+	this.info = function() {
+		var dl = document.createElement("dl");
+		jQuery.each(this,  function(index, element) {
+			if (typeof element != 'function' ) {
+				var dt = document.createElement("dt");
+				var dd = document.createElement("dd");
+				dt.textContent = index;
+				
+				if (typeof element == 'number') {
+					dd.textContent = element.toFixed(2);
+				} else if (typeof element == 'object' && typeof element.info == 'function') {l('x');
+					dd.innerHTML = '<a>' +  element + '</a>';
+				} else if (typeof element == 'object' && element[0] && typeof element[0].info == 'function') {
+					dd.textContent = index;
+				} else if (typeof element == 'string') {
+					dd.textContent = element;
+				} else if (typeof element == 'array') {
+					
+				} else {
+					return;
+				}
+				
+				dl.appendChild(dt);
+				dl.appendChild(dd);
+			}
+		});
+		return dl;
+	}
+
+	this.neighbors = function() {
+		var neighbors = [];
+		for (var x = -1; x < 2; x++) {
+			for (var y = -1; y < 2; y++) {
+				var habitat = this.environment.get_habitat(this.x + x, this.y + y);
+				if (habitat)
+					neighbors.push(habitat);
+			}
+		}
+		return neighbors;
+	}
 }

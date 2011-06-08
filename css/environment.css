@@ -1,5 +1,5 @@
 #environment table { border-collapse:collapse; border-spacing:0px 0px; border-style:none; border:0px; float:left; }
-.info { float:right; width:200px; height:200px; border:1px solid black; margin-bottom:15px; }
+.info { float:right; width:200px; min-height:200px; border:1px solid black; margin-bottom:15px; }
 
 .habitat { height:10px; width:10px; margin:0px; padding:0px; }
 .habitat.active { background:red; }

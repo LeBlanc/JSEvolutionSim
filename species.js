@@ -56,6 +56,8 @@ function Species(id, input, environment, simulation)
 
 	this.organism = function() {
 		var o = new Organism(this.sim.org_count, this, this.nucleus(), this.environment.random_habitat());
+		o.food += 20;
+		o.last_turn = rand(o.attributes["turn_speed"]);
 		this.sim.add_organism(o);
 		return o;
 	}
