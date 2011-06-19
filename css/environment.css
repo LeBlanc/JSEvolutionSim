@@ -3,8 +3,13 @@
 
 .habitat { height:10px; width:10px; margin:0px; padding:0px; }
 .habitat.active { background:red; }
-.selector { border:1px solid red; margin:0px; padding:0px; height:8px; width:8px; }
-
+.selector { border:1px solid red; margin:0px; padding:0px; height:10px; width:10px; }
+.organism { height:8px; width:8px; }
+/*
+.plant { border:1px solid green; }
+.herbivore { border:1px solid blue; } 
+.carnivore { border:1px solid red; } 
+*/
 .mountain { background:#4d310d; }
 .water { background:#3d48d0; } 
 .tundra { background:#e0e0e0; }
@@ -15,8 +20,6 @@
 .scrub { background:#ffedb8; }
 .jungle { background:#2f9a13; }
 .desert { background:#ecc113; }
-
-.organism { background:red !important; } 
 
 .info { }
 .info dt { display:inline-block; width:60px;  }

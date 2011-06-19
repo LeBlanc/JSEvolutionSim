@@ -1,62 +1,160 @@
 var sim;
-var organisms;
 var dolog = true;
 
 $(document).ready( function() {
+	sim = new Simulation(100,70);
+	sim.init();
 
-//console.log(string_multiply("bob ", 5));
-
-sim = new Simulation(100, 60);
-
-$.fn.get_habitat = function() {
-	var id = $(this).attr('id');
-	var x = id.substring( id.indexOf('habitat') + 7, id.indexOf('_'));
-	var y = id.substring( id.indexOf('_') + 1);
-	return sim.environment.habitats[x][y];
-}
-
-function display_habitat(habitat) {
-	$("#habitat_info dd.position").text(habitat.x + "," + habitat.y);
-	$("#habitat_info dd.type").text(habitat.type);
-	$("#habitat_info dd.height").text(habitat.height.toFixed(2));
-	$("#habitat_info dd.moisture").text(habitat.moisture.toFixed(2));
-	$("#habitat_info dd.soil").text(habitat.soil.toFixed(2));
-	$("#habitat_info dd.temperature").text(habitat.temperature.toFixed(2));
-	$("#habitat_info dd.food").text(habitat.food.toFixed(2));
-	$("#habitat_info dd.organism_count").text(habitat.organisms.length);
-	if (habitat.organisms.length > 0) {
-		l(habitat);
+	template3 = { 
+		"species_name": "grass",
+		"chromosome_count": 10,
+		"attributes": {
+			"turn_speed": 250,
+			"color_1": "230",
+			"color_2": "170",
+			"color_3": "250",
+			"mature_age": 5,
+			"virility": 30,
+			"mutation_rate": 0.005,
+			"longevity": 120,
+			"plant": 100,
+			"max_size":5,
+			'ideal_temperature': 70,
+			'ideal_moisture': 50,
+		}
 	}
-}
 
-
-
-function display_info(object, parent) {
-	if (!parent)
-		parent = $("#info");
-	parent.append(object.info());
-}
-
-function flush_display(parent) {
-	if (!parent) {
-		parent = $("#info"); l('f');}
-	parent.html('');
-}
-
-
-
-$('.habitat').click( function() { flush_display($("#habitat_info")); $(this).append($("#selector")); display_info($(this).get_habitat(), $("#habitat_info") ); });
-
-
-$("#run").click( function() { 
-	if (sim.paused) {
-		sim.paused = false;
-	} else {
-		sim.paused = true;
+	template4 = { 
+		"species_name": "bush",
+		"chromosome_count": 10,
+		"attributes": {
+			"turn_speed": 250,
+			"color_1": "030",
+			"color_2": "210",
+			"color_3": "250",
+			"mature_age": 5,
+			"virility": 30,
+			"mutation_rate": 0.005,
+			"longevity": 120,
+			"plant": 100,
+			"max_size":5,
+			'ideal_temperature': 85,
+			'ideal_moisture': 60,
+		}
 	}
-});
+	
+	template1 = { 
+		"species_name": "cow",
+		"chromosome_count": 5,
+		"attributes": {
+			"turn_speed": 250,
+			"color_1": "130",
+			"color_2": "170",
+			"color_3": "150",
+			"mature_age": 10,
+			"virility": 8,
+			"mutation_rate": 0.005,
+			"longevity": 400,
+			"herbivore": 100,
+			"max_size": 10,
+		}
+	}
+	template2 = { 
+		"species_name": "wolf",
+		"chromosome_count": 10,
+		"attributes": {
+			"turn_speed": 350,
+			"color_1": "030",
+			"color_2": "170",
+			"color_3": "250",
+			"mature_age": 25,
+			"virility": 4,
+			"mutation_rate": 0.005,
+			"longevity": 400,
+			"carnivore": 100,
+		}
+	}
+	s1 = new Species(1, template1, sim.environment, sim);
+	s2 = new Species(1, template2, sim.environment, sim);
+	s3 = new Species(1, template3, sim.environment, sim);
+	s4 = new Species(1, template4, sim.environment, sim);
+	
+	sim.species.push(s1, s2, s3, s4);
+
+	for (var i = 0; i < 400; i++) {
+		for (var z = 0; z < 10; z++) {
+			add_organism_to_random(s3);
+			add_organism_to_random(s4);
+		}
+		for (var z = 0; z < 3; z++) {
+			add_organism_to_random(s1);
+		}
+	}
+
+	
+
+
+
+	function add_organism_to_random(species) {
+		var habitat = sim.environment.random_habitat();
+		if (habitat.type == 'water' || habitat.type == 'mountain')
+			return;
+		var o = species.organism();
+		sim.add_organism(o, habitat);	
+	}
 
 
 
 
+
+
+
+
+
+	function display_info(object, parent) {
+		if (!parent)
+			parent = $("#info");
+		parent.append(object.info());
+	}
+
+	function flush_display(parent) {
+		if (!parent) {
+			parent = $("#info"); l('f');}
+		parent.html('');
+	}
+
+	$.fn.get_habitat = function() {
+		var id = $(this).attr('id');
+		var x = id.substring( id.indexOf('habitat') + 7, id.indexOf('_'));
+		var y = id.substring( id.indexOf('_') + 1);
+		return sim.environment.habitats[x][y];
+	}
+
+	function display_habitat(habitat) {
+		$("#habitat_info dd.position").text(habitat.x + "," + habitat.y);
+		$("#habitat_info dd.type").text(habitat.type);
+		$("#habitat_info dd.height").text(habitat.height.toFixed(2));
+		$("#habitat_info dd.moisture").text(habitat.moisture.toFixed(2));
+		$("#habitat_info dd.soil").text(habitat.soil.toFixed(2));
+		$("#habitat_info dd.temperature").text(habitat.temperature.toFixed(2));
+		$("#habitat_info dd.food").text(habitat.food.toFixed(2));
+		$("#habitat_info dd.organism_count").text(habitat.organisms.length);
+		if (habitat.organisms.length > 0) {
+			l(habitat);
+		}
+	}
+
+
+	$('.habitat').click( function() { flush_display($("#habitat_info")); $(this).append($("#selector")); display_info($(this).get_habitat(), $("#habitat_info") ); });
+
+
+	$("#controls #run").click( function() { 
+		if (sim.paused)
+			sim.run();
+		else
+			sim.paused;
+	 } );
+
+
+	 sim.run();
 });

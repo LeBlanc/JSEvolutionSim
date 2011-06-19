@@ -21,7 +21,7 @@ function Species(id, input, environment, simulation)
 	this.chromosomes = [];
 	for (var i=0; i < this.chromosome_count; i++)
 	{
-		var c = new Chromosome(i, 0, {});
+		var c = new Chromosome(i, 0, []);
 		this.chromosomes.push(c);
 	}
 
@@ -29,12 +29,11 @@ function Species(id, input, environment, simulation)
 	$.each(this.attributes, function(attr, val) { 
 		for (var i=0; i < Math.floor(Math.random()*5) + 2; i++) {
 			var c = rand_element(chromosomes);
-			var pos = rand_empty(c.genes, 100);
+			var pos = c.genes.length; //l(rand_empty(c.genes, 100));
 			var g = new Gene(0, pos, attr, val, rand(2));
 			c.genes[pos] = g;
 		}
 	}  );
-
 	
 	this.nucleus = function() {
 		var nucleus = [];
@@ -55,10 +54,9 @@ function Species(id, input, environment, simulation)
 	}
 
 	this.organism = function() {
-		var o = new Organism(this.sim.org_count, this, this.nucleus(), this.environment.random_habitat());
-		o.food += 20;
-		o.last_turn = rand(o.attributes["turn_speed"]);
-		this.sim.add_organism(o);
+		var o = new Organism(this.sim.org_count, this, this.nucleus());
+		o.food += 15;
+		o.sim = this.sim;
 		return o;
 	}
 
@@ -80,6 +78,10 @@ function Species(id, input, environment, simulation)
 		var index = this.organisms.indexOf(org);
 		this.organisms.splice(index, 1);
 	};
+
+	this.random_organism = function() {
+		return this.organisms[rand(this.organisms.length)];
+	}
 
 	this.stats = function() {
 		var stats = {};

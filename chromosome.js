@@ -1,7 +1,3 @@
-/*
- Chromosome Class
-*/
-
 function Chromosome(id, sister, genes) {
 
 	this.id = id;
@@ -15,5 +11,4 @@ function Chromosome(id, sister, genes) {
 			}
 		}
 	}
-	
 }

@@ -1,7 +1,3 @@
-/*
- ChromosomePair Class
-*/
-
 function ChromosomePair(id, c1, c2) {
 
 	this.id = id;
