@@ -47,14 +47,14 @@ function Simulation(x, y) {
 		var render_time = time() - s;
 		this.turn += 1;
 		var run_time = time() - start_time;
-		if (run_time > 250) {
+		if (run_time > 250 && this.show_stats) {
 			l(this.turn + ": " + run_time);
 			l("render_time: " + render_time);
 			this.show_times();
 			this.show_population_levels();
 			l(" ");
 		}
-		this.iteration = setTimeout("sim.run();", Math.max(300 - run_time, 1));
+		this.iteration = setTimeout("sim.run();", Math.max(400 - run_time, 1));
 	}
 
 	this.start = function() {

@@ -19,9 +19,47 @@ $(document).ready( function() {
 			"mutation_rate": 0.005,
 			"longevity": 120,
 			"plant": 100,
-			"max_size":5,
+			"max_size":10,
 			'ideal_temperature': 70,
 			'ideal_moisture': 50,
+		}
+	}
+
+	template5 = { 
+		"species_name": "shrub",
+		"chromosome_count": 10,
+		"attributes": {
+			"turn_speed": 250,
+			"color_1": "070",
+			"color_2": "070",
+			"color_3": "220",
+			"mature_age": 5,
+			"virility": 30,
+			"mutation_rate": 0.005,
+			"longevity": 120,
+			"plant": 100,
+			"max_size":25,
+			'ideal_temperature': 70,
+			'ideal_moisture': 50,
+		}
+	}
+
+	template6 = { 
+		"species_name": "redwood",
+		"chromosome_count": 10,
+		"attributes": {
+			"turn_speed": 250,
+			"color_1": "070",
+			"color_2": "070",
+			"color_3": "070",
+			"mature_age": 5,
+			"virility": 30,
+			"mutation_rate": 0.005,
+			"longevity": 120,
+			"plant": 100,
+			"max_size":85,
+			'ideal_temperature': 90,
+			'ideal_moisture': 75,
 		}
 	}
 
@@ -38,7 +76,7 @@ $(document).ready( function() {
 			"mutation_rate": 0.005,
 			"longevity": 120,
 			"plant": 100,
-			"max_size":5,
+			"max_size":35,
 			'ideal_temperature': 85,
 			'ideal_moisture': 60,
 		}
@@ -57,7 +95,7 @@ $(document).ready( function() {
 			"mutation_rate": 0.005,
 			"longevity": 400,
 			"herbivore": 100,
-			"max_size": 10,
+			"max_size": 20,
 		}
 	}
 	template2 = { 
@@ -79,13 +117,17 @@ $(document).ready( function() {
 	s2 = new Species(1, template2, sim.environment, sim);
 	s3 = new Species(1, template3, sim.environment, sim);
 	s4 = new Species(1, template4, sim.environment, sim);
+	s5 = new Species(1, template5, sim.environment, sim);
+	s6 = new Species(1, template6, sim.environment, sim);
 	
-	sim.species.push(s1, s2, s3, s4);
+	sim.species.push(s1, s2, s3, s4, s5, s6);
 
 	for (var i = 0; i < 400; i++) {
-		for (var z = 0; z < 10; z++) {
+		for (var z = 0; z < 5; z++) {
 			add_organism_to_random(s3);
 			add_organism_to_random(s4);
+			add_organism_to_random(s5);
+			add_organism_to_random(s6);
 		}
 		for (var z = 0; z < 3; z++) {
 			add_organism_to_random(s1);
@@ -148,10 +190,12 @@ $(document).ready( function() {
 
 
 	$("#controls #run").click( function() { 
-		if (sim.paused)
+		if (sim.paused) {
+			sim.paused = false;
 			sim.run();
-		else
-			sim.paused;
+		} else { 
+			sim.paused = true;
+		}
 	 } );
 
 
