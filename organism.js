@@ -161,6 +161,10 @@ function Organism(id, species, pairs, habitat, size) {
 	}
 	
 	this.death_check = function() {
+		if (this.dead) {
+			return true;
+		}
+	
 		if (this.age > this.attributes["longevity"]) {
 			return true;
 		}
@@ -322,7 +326,7 @@ function Organism(id, species, pairs, habitat, size) {
 	this.photosynthesize = function() {
 		var start = time();
 		var e = this.energy_maintenence();
-		var diff = ( this.habitat.moisture - this.attributes['ideal_moisture']) / 1.75 + ( this.habitat.temperature - this.attributes['ideal_temperature']) / 1.75 + (this.habitat.shade - this.size) * 7.0 ;
+		var diff = ( this.habitat.moisture - this.attributes['ideal_moisture']) / 1.0075 + ( this.habitat.temperature - this.attributes['ideal_temperature']) / 1.0075 + (this.habitat.shade - this.size) * 7.0 ;
 		diff =  Math.max(1, Math.sqrt( Math.abs(diff) / 2.5 ));
 		this.food += Math.sqrt(this.size) * 2.0 / diff ;
 		this.sim.add_times('photosynthesize', time() - start);
@@ -338,6 +342,13 @@ function Organism(id, species, pairs, habitat, size) {
 			return 'herbivore';
 		if (this.attributes["carnivore"] > 10)
 			return 'carnivore';
+	}
+
+	this.deadly_mutation_check = function() {
+		if (this.attributes['color_1'] > 300 || this.attributes['color_2'] > 300 || this.attributes['color_3'] > 300) {
+			this.die();
+			return true;
+		}
 	}
 
 	this.init = function() {
