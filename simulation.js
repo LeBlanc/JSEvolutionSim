@@ -47,7 +47,7 @@ function Simulation(x, y) {
 		var render_time = time() - s;
 		this.turn += 1;
 		var run_time = time() - start_time;
-		if (run_time > 250 && this.show_stats) {
+		if ( this.show_stats) {
 			l(this.turn + ": " + run_time);
 			l("render_time: " + render_time);
 			this.show_times();
