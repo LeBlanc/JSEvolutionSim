@@ -4,6 +4,7 @@ var dolog = true;
 $(document).ready( function() {
 	sim = new Simulation(100,70);
 	sim.init();
+	var selected_habitat = false;
 
 	template3 = { 
 		"species_name": "grass",
@@ -111,17 +112,7 @@ $(document).ready( function() {
 
 
 
-	function display_info(object, parent) {
-		if (!parent)
-			parent = $("#info");
-		parent.append(object.info());
-	}
 
-	function flush_display(parent) {
-		if (!parent) {
-			parent = $("#info"); l('f');}
-		parent.html('');
-	}
 
 	$.fn.get_habitat = function() {
 		var id = $(this).attr('id');
@@ -145,7 +136,15 @@ $(document).ready( function() {
 	}
 
 
-	$('.habitat').click( function() { flush_display($("#habitat_info")); $(this).append($("#selector")); display_info($(this).get_habitat(), $("#habitat_info") ); });
+	$('.habitat').click( function() {
+		if (sim.selected_habitat) {
+			$(sim.selected_habitat.element).children('.organism').removeClass('selector');
+		}
+		$(this).children('.organism').addClass('selector');
+		var habitat = $(this).get_habitat();
+		habitat.display_info();
+		sim.selected_habitat = habitat;
+	 });
 
 
 	$("#controls #run").click( function() { 

@@ -4,6 +4,7 @@
 
 function Habitat(element, environment, x ,y, moisture, height, temperature, soil) {
 	this.element = element;
+	this.organism_element = element.childNodes[0];
 	this.x = x;
 	this.y = y;
 	this.moisture = moisture;
@@ -99,12 +100,9 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 		if (this.organisms.length > 0 ) {
 			var o = this.organisms[this.organisms.length - 1];
 			var color = o.color;
-			this.element.childNodes[0].setAttribute('style', 'background-color:'+ color);
-			this.element.childNodes[0].className = 'organism ' + o.type();
-			
+			this.organism_element.setAttribute('style', 'background-color:'+ color);
 		} else {
-			this.element.childNodes[0].setAttribute('style', '');
-			this.element.childNodes[0].className = '';
+			this.organism_element.setAttribute('style', '');
 		}
 	};
 
@@ -171,31 +169,29 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 
 
 	this.info = function() {
-		var dl = document.createElement("dl");
-		jQuery.each(this,  function(index, element) {
-			if (typeof element != 'function' ) {
-				var dt = document.createElement("dt");
-				var dd = document.createElement("dd");
-				dt.textContent = index;
-				
-				if (typeof element == 'number') {
-					dd.textContent = element.toFixed(2);
-				} else if (typeof element == 'object' && typeof element.info == 'function') {l('x');
-					dd.innerHTML = '<a>' +  element + '</a>';
-				} else if (typeof element == 'object' && element[0] && typeof element[0].info == 'function') {
-					dd.textContent = index;
-				} else if (typeof element == 'string') {
-					dd.textContent = element;
-				} else if (typeof element == 'array') {
-					
-				} else {
-					return;
-				}
-				
-				dl.appendChild(dt);
-				dl.appendChild(dd);
-			}
-		});
-		return dl;
+		var info = {};
+		info.x = this.x;
+		info.y = this.y;
+		info.moisture = this.moisture.toFixed(2);
+		info.temperature = this.temperature.toFixed(2);
+		info.soil = this.soil.toFixed(2);
+		info.shade = this.shade.toFixed(2);
+		info.organisms = this.organisms.length;
+
+		return info;
+	}
+
+	this.display_info= function() {
+		var info = this.info();
+		var habitat_info = $('#habitat_info');
+		habitat_info.html('');
+		for (i in info) {
+			var dt = document.createElement('dt');
+			dt.textContent = i;
+			var dd = document.createElement('dd');
+			dd.textContent = info[i];
+			habitat_info.append(dt);
+			habitat_info.append(dd);
+		}
 	}
 }

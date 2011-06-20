@@ -41,15 +41,20 @@ function Simulation(x, y) {
 			else
 				this.organisms[i].run();
 		}
-	
+		var s = time();
 		this.environment.render();
+		this.update_selected_display();
+		var render_time = time() - s;
 		this.turn += 1;
 		var run_time = time() - start_time;
-		l(this.turn + ": " + run_time);
-		this.show_times();
-		this.show_population_levels();
-		l(" ");
-		this.iteration = setTimeout("sim.run();", Math.max(500 - run_time, 1));
+		if (run_time > 250) {
+			l(this.turn + ": " + run_time);
+			l("render_time: " + render_time);
+			this.show_times();
+			this.show_population_levels();
+			l(" ");
+		}
+		this.iteration = setTimeout("sim.run();", Math.max(300 - run_time, 1));
 	}
 
 	this.start = function() {
@@ -76,6 +81,12 @@ function Simulation(x, y) {
 	this.show_population_levels = function() {
 		for (var i = 0; i < this.species.length; i++) {
 			l(this.species[i].species_name + ": " + this.species[i].organisms.length);
+		}
+	}
+
+	this.update_selected_display = function() {
+		if (this.selected_habitat) {
+			this.selected_habitat.display_info();
 		}
 	}
 

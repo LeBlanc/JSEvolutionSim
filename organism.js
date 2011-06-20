@@ -62,8 +62,10 @@ function Organism(id, species, pairs, habitat, size) {
 		var start = time();
 		var attributes = {}
 		var effects = {};
-		$.each(this.chromosomes, function(i, pair) { 
-			$.each(pair.c1.genes, function(p, g1) {
+		for (i in this.chromosomes) { 
+			var pair = this.chromosomes[i];
+			for (p in pair.c1.genes) {
+				var g1 = pair.c1.genes[p];
 				if (g1) {
 					var g2 = pair.c2.genes[p];
 					if (g1.dominance == g2.dominance ) {
@@ -76,8 +78,8 @@ function Organism(id, species, pairs, habitat, size) {
 					else
 						attributes[g1.attribute] = ( attributes[g1.attribute] + effect ) / 2.0;
 				}
-			} );
-		} );
+			}
+		}
 		this.attributes = attributes;
 		sim.add_times('calculate_attributes', time() - start);
 	}
@@ -116,6 +118,7 @@ function Organism(id, species, pairs, habitat, size) {
 	}
 
 	this.mating_match = function(partner) {
+		var start = time();
 		if (
 			partner != this && partner.species === this.species && 
 			this.age >= this.attributes["mature_age"] && 
@@ -123,8 +126,10 @@ function Organism(id, species, pairs, habitat, size) {
 			this.babies_had < this.attributes["virility"] && 
 			partner.babies_had < partner.attributes["virility"]
 		) {
+			this.sim.add_times('mating_match', time() - start);
 			return true; 
 		} else { 
+			this.sim.add_times('mating_match', time() - start);
 			return false;
 		}
 	}
@@ -288,9 +293,11 @@ function Organism(id, species, pairs, habitat, size) {
 	}
 
 	this.plant_find_partner = function() {
+		var start = time();
 		var hab = this.habitat.random_neighbor();
 		if (!hab)
 			return;
+		this.sim.add_times('random_neighbor', time() - start);
 
 		var o = hab.random_organism()
 		if (o && this.mating_match(o))

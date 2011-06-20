@@ -41,8 +41,8 @@ function Species(id, input, environment, simulation)
 			var genes1 = [];
 			var genes2 = [];
 			$.each(chromosome.genes, function( p, gene) {
-				genes1[p] = new Gene(0, gene.position, gene.attribute,  (Math.random() / 10.0 + .95) * gene.effect, rand(2));
-				genes2[p] = new Gene(0, gene.position, gene.attribute,  (Math.random() / 10.0 + .95) * gene.effect, rand(2));
+				genes1[p] = new Gene(0, gene.position, gene.attribute,  (Math.random() / 2.0 + .75) * gene.effect, rand(2));
+				genes2[p] = new Gene(0, gene.position, gene.attribute,  (Math.random() / 2.0 + .75) * gene.effect, rand(2));
 			});
 			var c1 = new Chromosome(0, 0, genes1);
 			var c2 = new Chromosome(0, c1, genes2);
