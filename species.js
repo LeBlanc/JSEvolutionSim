@@ -55,7 +55,8 @@ function Species(id, input, environment, simulation)
 
 	this.organism = function() {
 		var o = new Organism(this.sim.org_count, this, this.nucleus());
-		o.food += 5;
+		o.size = 2;
+		o.food += 25;
 		o.sim = this.sim;
 		return o;
 	}
@@ -70,6 +71,14 @@ function Species(id, input, environment, simulation)
 
 		for (var i = 0; i < this.organisms.length; i++) {
 			total += this.organisms[i].attributes[attribute];
+		}
+		return total / this.organisms.length;
+	}
+
+	this.average_size = function() {
+		var total = 0;
+		for (var i = 0; i < this.organisms.length; i++) {
+			total += this.organisms[i].size;
 		}
 		return total / this.organisms.length;
 	}
@@ -89,6 +98,7 @@ function Species(id, input, environment, simulation)
 		$.each(this.attributes, function(attribute, value) { 
 			stats[attribute] = species.average_attribute(attribute);
 		});
+		stats['avg_size'] = this.average_size();
 		stats['population_size'] = this.organisms.length;
 		return stats;
 	}
