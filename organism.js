@@ -1,6 +1,7 @@
 function Organism(id, species, pairs, habitat, size) {
 	this.id = id;
 	this.species = species;
+	this.species.organisms.push(this);
 	this.chromosomes = pairs;
 	this.attributes = {};
 	this.habitat = habitat;
@@ -14,6 +15,10 @@ function Organism(id, species, pairs, habitat, size) {
 
 	this.run = function() {
 		var start = time();
+		if(this.dead) {
+			return;
+		}
+		
 		if (this.death_check()) {
 			this.die();
 			return;
@@ -29,15 +34,15 @@ function Organism(id, species, pairs, habitat, size) {
 	}
 
 	this.herbivore_behavior = function() {
-		this.random_move();
-
 		if (this.hungry())
 			this.graze();
 
 		
 
 		if (this.can_mate()) {
-			this.attempt_mate(); 
+			this.seek_mate();
+		} else {
+			this.seek_plants();
 		}
 
 		if (this.can_grow()) {
@@ -137,20 +142,47 @@ function Organism(id, species, pairs, habitat, size) {
 	}
 
 	this.can_mate = function() {
-		if (this.age > this.attributes["mature_age"] && this.babies_had < this.attributes["virility"])
+		if (this.age > this.attributes["mature_age"] && this.babies_had < this.attributes["virility"] && this.food > this.energy_maintenence() * 4.0)
 			return true;
 		return false;
 	}
 
-	this.attempt_mate = function() {
-		for (var i = 0; i < this.habitat.organisms.length; i++) {
-			if (this.mating_match(this.habitat.organisms[i])) {
-				var baby = this.mate(this.habitat.organisms[i]);
-				baby.sim = this.sim;
-				sim.add_organism(baby, this.habitat);
-				return;
+	this.seek_mate = function() {
+		var neighbors = this.habitat.neighbors();
+		while (neighbors.length > 0) {
+			var hab = neighbors[rand(neighbors.length)];
+			for (var i = 0; i < hab.organisms.length; i++) {
+				if (this.mating_match(hab.organisms[i])) {
+					this.move_to_habitat(hab);
+					var baby = this.mate(hab.organisms[i]);
+					baby.sim = this.sim;
+					sim.add_organism(baby, this.habitat);
+					var food_to_baby = this.food - this.energy_maintenence() * 2.5;
+					this.food -= food_to_baby;
+					baby.food += food_to_baby;
+					return true;
+				}
 			}
+			neighbors.splice(neighbors.indexOf(hab), 1);
 		}
+		this.random_move();
+		return false
+	}
+
+	this.seek_plants = function() {
+		var neighbors = this.habitat.neighbors();
+		while (neighbors.length > 0) {
+			var hab = neighbors[rand(neighbors.length)];
+			for (var i = 0; i < hab.organisms.length; i++) {
+				if (hab.organisms[i].attributes['plant'] > 10) {
+					this.move_to_habitat(hab);
+					return true;
+				}
+			}
+			neighbors.splice(neighbors.indexOf(hab), 1);
+		}
+		this.random_move();
+		return false
 	}
 
 	this.die = function() {
@@ -197,8 +229,16 @@ function Organism(id, species, pairs, habitat, size) {
 		}
 	}
 
+	this.move_to_habitat = function(habitat) {
+		this.habitat.remove_organism(this);
+		this.habitat = habitat;
+		this.habitat.organisms.push(this);
+		this.x = this.habitat.x;
+		this.y = this.habitat.y;
+	}
+
 	this.hungry = function() {
-		if (this.food < 25)
+		if (this.food < this.energy_maintenence() * 5.0)
 			return true;
 		return false;
 	}
@@ -224,15 +264,17 @@ function Organism(id, species, pairs, habitat, size) {
 		for (var i = 0; i < this.habitat.organisms.length; i++ ) {
 			var o = this.habitat.organisms[i];
 			if (o.attributes["plant"] > 10) {
-				var eat = this.energy_maintenence() * 4.5;
+				var eat = this.energy_maintenence() * 3.0;
 				if (eat > o.size) {
-					this.food += o.size * 2.0;
-					o.size = o.size / 4.0
+					this.food += o.size / 2.0 * 0.50;
+					o.size = o.size / 2.0
 				} else {
-					this.food += eat * 2.0;
+					this.food += eat * 0.33;
 					o.size -= eat;
-					return;
 				}
+
+				if (!this.hungry())
+					return;
 			}
 		}
 	}
@@ -260,19 +302,23 @@ function Organism(id, species, pairs, habitat, size) {
 
 
 	this.can_grow = function() {
-		if (this.food > this.energy_maintenence() + 0.5 && this.attributes["max_size"] > this.size)
+		if (this.food > this.energy_maintenence() * 5.5 + 0.5 && this.attributes["max_size"] > this.size)
 			return true;
 		return false;
 	}
 
 	this.grow = function() {
-		var growth = Math.min(this.food - 0.50, 0.50);
+		var growth = Math.min(this.attributes['max_size'] / 5.0, Math.max(this.food - this.size / 5, 0.25));
+		var food_surplus = 1;//Math.min((this.food / (this.energy_maintenence() * 4.0)), 1);
+		growth = growth * food_surplus;
 		this.food -= growth;
-		this.size += growth * 1.5;
+		this.size += growth;
 	}
 
 	this.energy_maintenence = function() {
-		return Math.sqrt(this.size / 1.5);
+		if (this.size < 1.5)
+			return 0.5;
+		return Math.sqrt(this.size - 1.5);
 	}
 
 	this.metabolism = function() {
@@ -297,14 +343,15 @@ function Organism(id, species, pairs, habitat, size) {
 		if (!partner)
 			return;
 
-		var habitat = this.habitat.environment.get_habitat(this.habitat.x + rand(12) - 4, this.habitat.y +  rand(12) - 4 ); 
+		var habitat = this.habitat.environment.get_habitat(this.habitat.x + rand(24) - 8, this.habitat.y +  rand(24) - 8 ); 
 		if (!habitat || habitat.type == 'water' || habitat.type == 'mountain')
 			return;
 
 		var baby = this.mate(partner);
+		baby.food += this.energy_maintenence();
 		baby.sim = this.sim;
 		this.sim.add_organism(baby, habitat);
-		this.food -= 0.4
+		this.food -= this.energy_maintenence();
 		this.sim.add_times('pollenate', time() - start);
 	}
 
@@ -326,9 +373,11 @@ function Organism(id, species, pairs, habitat, size) {
 	this.photosynthesize = function() {
 		var start = time();
 		var e = this.energy_maintenence();
-		var diff = ( this.habitat.moisture - this.attributes['ideal_moisture']) / 1.0075 + ( this.habitat.temperature - this.attributes['ideal_temperature']) / 1.0075 + (this.habitat.shade - this.size) * 7.0 ;
-		diff =  Math.max(1, Math.sqrt( Math.abs(diff) / 2.5 ));
-		this.food += Math.sqrt(this.size) * 2.0 / diff ;
+		var temp_diff = this.attributes['ideal_temperature'] - this.habitat.temperature;
+		var moisture_diff = this.attributes['ideal_moisture'] - this.habitat.moisture;
+		var diff = 10.0 / Math.max(1, Math.sqrt( temp_diff * temp_diff + moisture_diff * moisture_diff));
+		var shade = Math.max(0, this.habitat.shade - this.size);
+		this.food += this.size * diff - shade;
 		this.sim.add_times('photosynthesize', time() - start);
 	}
 
@@ -353,7 +402,7 @@ function Organism(id, species, pairs, habitat, size) {
 
 	this.init = function() {
 		this.calculate_attributes();
-		this.species.organisms.push(this);
+		//this.species.organisms.push(this); // now done up top
 		this.color = 'rgb('+ this.attributes["color_1"].toFixed(0) +',' + this.attributes["color_2"].toFixed(0)  +',' + this.attributes["color_3"].toFixed(0)  +');';
 
 		if (this.attributes["plant"])
