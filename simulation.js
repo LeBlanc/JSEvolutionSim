@@ -1,4 +1,5 @@
 function Simulation(x, y) {
+	this.show_stats = true;
 	this.turn = 0;
 	this.species = [];
 	this.paused = false;
@@ -34,6 +35,13 @@ function Simulation(x, y) {
 			return;
 		
 		var start_time = time();
+
+		var pop_size = this.organisms.length;
+		if (pop_size > 15000) {
+			for (var i = 0; i < pop_size - 15000; i++) {
+				this.organisms[rand(pop_size)].die();
+			}
+		}
 		
 		for (var i = 0; i < this.organisms.length; i++) {
 			if (this.organisms[i].dead)
@@ -54,7 +62,7 @@ function Simulation(x, y) {
 			this.show_population_levels();
 			l(" ");
 		}
-		this.iteration = setTimeout("sim.run();", Math.max(400 - run_time, 1));
+		this.iteration = setTimeout("sim.run();", Math.max(400 - run_time, 50));
 	}
 
 	this.start = function() {
@@ -79,6 +87,7 @@ function Simulation(x, y) {
 	}
 
 	this.show_population_levels = function() {
+		l("total: " + this.organisms.length);
 		for (var i = 0; i < this.species.length; i++) {
 			l(this.species[i].species_name + ": " + this.species[i].organisms.length);
 		}
