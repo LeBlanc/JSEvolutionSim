@@ -30,7 +30,7 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 			value = 'taiga';
 		else if (this.temperature < 45)
 			value = 'taiga';
-		else if (this.moisture > 90)
+		else if (this.moisture > 85)
 			value = 'swamp';
 		else if (this.temperature < 55 && this.moisture < 50)
 			value = 'steppe';
@@ -147,6 +147,7 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 		for (var i = 0; i < this.organisms.length; i++) {
 			this.shade += this.organisms[i].size;
 		}
+		this.shade = this.shade / this.organisms.length;
 	}
 
 
