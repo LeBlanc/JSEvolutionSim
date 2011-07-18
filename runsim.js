@@ -15,13 +15,13 @@ $(document).ready( function() {
 			"color_2": "170",
 			"color_3": "250",
 			"mature_age": 5,
-			"virility": 30,
+			"virility": 90,
 			"mutation_rate": 0.005,
-			"longevity": 120,
+			"longevity": 100,
 			"plant": 100,
-			"max_size":10,
+			"max_size":5,
 			'ideal_temperature': 70,
-			'ideal_moisture': 50,
+			'ideal_moisture': 60,
 		}
 	}
 
@@ -33,14 +33,14 @@ $(document).ready( function() {
 			"color_1": "070",
 			"color_2": "070",
 			"color_3": "220",
-			"mature_age": 5,
+			"mature_age": 15,
 			"virility": 30,
 			"mutation_rate": 0.005,
 			"longevity": 120,
 			"plant": 100,
 			"max_size":25,
-			'ideal_temperature': 70,
-			'ideal_moisture': 50,
+			'ideal_temperature': 50,
+			'ideal_moisture': 60,
 		}
 	}
 
@@ -52,14 +52,14 @@ $(document).ready( function() {
 			"color_1": "070",
 			"color_2": "070",
 			"color_3": "070",
-			"mature_age": 5,
-			"virility": 30,
+			"mature_age": 25,
+			"virility": 90,
 			"mutation_rate": 0.005,
 			"longevity": 120,
 			"plant": 100,
-			"max_size":85,
-			'ideal_temperature': 90,
-			'ideal_moisture': 75,
+			"max_size":95,
+			'ideal_temperature': 50,
+			'ideal_moisture': 85,
 		}
 	}
 
@@ -71,7 +71,7 @@ $(document).ready( function() {
 			"color_1": "030",
 			"color_2": "210",
 			"color_3": "250",
-			"mature_age": 5,
+			"mature_age": 15,
 			"virility": 30,
 			"mutation_rate": 0.005,
 			"longevity": 120,
@@ -98,6 +98,23 @@ $(document).ready( function() {
 			"max_size": 20,
 		}
 	}
+	template7 = { 
+		"species_name": "buffalo",
+		"chromosome_count": 5,
+		"attributes": {
+			"turn_speed": 250,
+			"color_1": "130",
+			"color_2": "070",
+			"color_3": "150",
+			"mature_age": 25,
+			"virility": 30,
+			"mutation_rate": 0.005,
+			"longevity": 800,
+			"herbivore": 100,
+			"max_size": 15,
+		}
+	}
+	
 	template2 = { 
 		"species_name": "wolf",
 		"chromosome_count": 10,
@@ -119,18 +136,20 @@ $(document).ready( function() {
 	s4 = new Species(1, template4, sim.environment, sim);
 	s5 = new Species(1, template5, sim.environment, sim);
 	s6 = new Species(1, template6, sim.environment, sim);
+	s7 = new Species(1, template7, sim.environment, sim);
 	
-	sim.species.push(s1, s2, s3, s4, s5, s6);
+	sim.species.push(s1, s2, s3, s4, s5, s6, s7);
 
-	for (var i = 0; i < 400; i++) {
-		for (var z = 0; z < 5; z++) {
+	for (var i = 0; i < 100; i++) {
+		for (var z = 0; z < 30; z++) {
 			add_organism_to_random(s3);
 			add_organism_to_random(s4);
 			add_organism_to_random(s5);
 			add_organism_to_random(s6);
 		}
-		for (var z = 0; z < 3; z++) {
+		for (var z = 0; z < 2; z++) {
 			add_organism_to_random(s1);
+			add_organism_to_random(s7);
 		}
 	}
 
