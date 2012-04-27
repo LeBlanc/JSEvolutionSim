@@ -9,7 +9,9 @@ function Environment( x, y) {
 		//var soil = this.random_sources(20, 40, 30, 120);
 		var temperature = this.random_sources(20, 40, 32, 120);
 	
-		canvas = ($(canvas_selector));
+		var canvas = document.getElementById('canvas');
+		var ctx = canvas.getContext("2d");  
+		
 		for (var xx = 0; xx < this.x; xx++) {
 			this.habitats[xx] = [];
 			for (var yy = 0; yy < this.y; yy++) {
@@ -21,15 +23,9 @@ function Environment( x, y) {
 				habitat.temperature = this.calculate_attribute(xx, yy, temperature, 0);
 				habitat.set_type();
 				this.habitats[xx][yy] = habitat;
+				ctx.fillStyle = habitat.get_color();  
+				ctx.fillRect (xx * 10, yy * 10, 10, 10);
 			}
-		}
-
-		for (var yy = 0; yy < this.y; yy++) {
-			var row = this.make_row();
-			for (var xx = 0; xx < this.x; xx++) {
-				$(row).append(this.habitats[xx][yy].element);
-			}
-			canvas.append(row);
 		}
 
 	};
@@ -39,12 +35,7 @@ function Environment( x, y) {
 	};
 
 	this.make_habitat = function(x, y) {
-		var td = document.createElement('td');
-		td.setAttribute('id', 'habitat' + x +'_' + y);
-		var div = document.createElement('div');
-		div.className = 'organism';
-		td.appendChild(div);
-		return new Habitat(td, this, x, y, 0,0,0,0); 
+		return new Habitat(this, x, y, 0,0,0,0); 
 	};
 
 	this.random_sources = function(minimum, maximum, start, range) {
@@ -85,7 +76,8 @@ function Environment( x, y) {
 		}
 	};
 
-	this.render = function() { 
+	this.render = function() {
+		//document.getElementById('canvas').getContext('2d').clearRect(0,0,800,800);
 		for (var xx = 0; xx < this.x; xx++) {
 			for (var yy = 0; yy < this.y; yy++) {
 				this.habitats[xx][yy].iterate();

@@ -2,9 +2,7 @@
  * Habitat Class
  */
 
-function Habitat(element, environment, x ,y, moisture, height, temperature, soil) {
-	this.element = element;
-	this.organism_element = element.childNodes[0];
+function Habitat(environment, x ,y, moisture, height, temperature, soil) {
 	this.x = x;
 	this.y = y;
 	this.moisture = moisture;
@@ -15,6 +13,8 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 	this.environment = environment;
 	this.food = 0;
 	this.shade = 0;
+	this.color = false;
+	this.changed = false;
 
 	
 
@@ -68,11 +68,47 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 	this.set_type = function() {
 		this.type = this.get_type();
 		this.soil = this.get_soil();
-		$(element).addClass('habitat');
-		$(element).addClass(this.type);
+		this.color = this.get_color();
+		var canvas = document.getElementById('canvas');
+		this.ctx = canvas.getContext('2d');
 		return this.type;
 	}
-
+	/*
+	.mountain { background:#4d310d; }
+	.water { background:#3d48d0; } 
+	.tundra { background:#e0e0e0; }
+	.taiga { background:#9ba698; }
+	.swamp { background:#5be13c; }
+	.steppe { background:#ead492; }
+	.temperate { background:#5db13f; }
+	.scrub { background:#ffedb8; }
+	.jungle { background:#2f9a13; }
+	.desert { background:#ecc113; }
+	*/
+	this.get_color = function() {
+		var type = this.get_type();
+		if (type == "mountain")
+			return "4d310d";
+		else if (type == 'water')
+			return "3d48d0";
+		else if (type == "tundra")
+			return "e0e0e0";
+		else if (type == "taiga")
+			return "9ba698";
+		else if (type == "swamp")
+			return "5be13c";
+		else if (type == "steppe")
+			return "ead492";
+		else if (type == "temperate")
+			return "5db13f";
+		else if (type == "scrub")
+			return "ffedb8";
+		else if (type == "jungle")
+			return "2f9a13";
+		else if (type == "desert")
+			return "ecc113";
+	}
+	
 	this.get_soil = function() {
 		var soil = 0;
 		if (this.type == 'jungle')
@@ -96,7 +132,8 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 	}
 
 
-	this.render = function() { 
+	this.render = function() {
+		/*
 		if (this.organisms.length > 0 ) {
 			var o = this.organisms[this.organisms.length - 1];
 			var color = o.color;
@@ -104,13 +141,23 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 		} else {
 			this.organism_element.setAttribute('style', '');
 		}
+	*/
+		if (this.organisms.length > 0 ) {
+			this.ctx.fillStyle = this.organisms[this.organisms.length - 1].color;
+			this.ctx.fillRect (this.x * 10 + 1, this.y * 10 + 1, 8, 8);
+		} else {
+			this.ctx.fillStyle = this.color;  
+			this.ctx.fillRect (this.x * 10, this.y * 10, 10, 10);
+		}
 	};
 
 	this.add_organism = function(org) {
+		this.changed = true;
 		this.organisms.push(org);
 	}
 
 	this.remove_organism = function(org) {
+		this.changed = true;
 		var index = this.organisms.indexOf(org);
 		this.organisms.splice(index, 1);
 	};
@@ -123,7 +170,8 @@ function Habitat(element, environment, x ,y, moisture, height, temperature, soil
 		this.calculate_shade();
 		if (this.food < 5)
 			this.food += this.soil / 40.0;
-		this.render();
+		if (this.changed)
+			this.render();
 	}
 
 	this.neighbors = function() {

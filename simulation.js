@@ -62,7 +62,7 @@ function Simulation(x, y) {
 			this.show_population_levels();
 			l(" ");
 		}
-		this.iteration = setTimeout("sim.run();", Math.max(400 - run_time, 50));
+		this.iteration = setTimeout("sim.run();", Math.max(0 - run_time, 50));
 	}
 
 	this.start = function() {

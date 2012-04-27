@@ -2,7 +2,7 @@ var sim;
 var dolog = true;
 
 $(document).ready( function() {
-	sim = new Simulation(100,70);
+	sim = new Simulation(80,80);
 	sim.init();
 	var selected_habitat = false;
 
