@@ -1,4 +1,4 @@
-function Chromosome(id, sister, genes) {
+Chromosome = function(id, sister, genes) {
 
 	this.id = id;
 	this.sister = sister;

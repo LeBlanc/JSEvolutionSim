@@ -1,4 +1,4 @@
-function Simulation(x, y) {
+Simulation = function(x, y, io) {
 	this.show_stats = true;
 	this.turn = 0;
 	this.species = [];
@@ -13,6 +13,7 @@ function Simulation(x, y) {
 	this.times.mate = 0;
 	this.times.calculate_attributes = 0;
 	this.times.meiosis = 0;
+	this.run_time = 0;
 
 	this.add_organism = function(organism, habitat) {
 		organism.habitat = habitat;
@@ -26,7 +27,7 @@ function Simulation(x, y) {
 
 	this.init = function() {
 		this.environment = new Environment(this.x,this.y);
-		this.environment.generate("#environment table tbody");
+		this.environment.generate();
 	}
 
 	this.run = function() {
@@ -50,8 +51,7 @@ function Simulation(x, y) {
 				this.organisms[i].run();
 		}
 		var s = time();
-		this.environment.render();
-		this.update_selected_display();
+		this.environment.iterate();
 		var render_time = time() - s;
 		this.turn += 1;
 		var run_time = time() - start_time;
@@ -62,7 +62,12 @@ function Simulation(x, y) {
 			this.show_population_levels();
 			l(" ");
 		}
-		this.iteration = setTimeout("sim.run();", Math.max(0 - run_time, 50));
+		
+		this.run_time = run_time;
+		
+		io.sockets.emit('render',{data: this.environment.rendered});
+		
+		//this.iteration = setTimeout("sim.run()", Math.max(400 - run_time, 50));
 	}
 
 	this.start = function() {

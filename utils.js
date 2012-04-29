@@ -2,7 +2,7 @@
  utility functions - need to wrap into a namespace. 
 */
 
-function baseConverter (number,ob,nb) {
+baseConverter = function(number,ob,nb) {
 	// Created 1997 by Brian Risk.  http://brianrisk.com
 	number = number.toUpperCase();
 	var list = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -20,14 +20,14 @@ function baseConverter (number,ob,nb) {
 	return number;
 }
 
-function string_multiply(string, ntimes) {
+string_multiply = function(string, ntimes) {
 	var result = '';
 	for (var z = 0; z < ntimes; z++) {
 		result += string; }
 	return result;
 }
 
-function bp_to_json(bp) {
+bp_to_json = function(bp) {
 	bp = bp.replace(/G/g, "0");
 	bp = bp.replace(/A/g, "1");
 	bp = bp.replace(/C/g, "2");
@@ -41,25 +41,25 @@ function bp_to_json(bp) {
 	return result;
 }
 
-function json_to_gene(json) {
+json_to_gene = function(json) {
 	return g = new Gene(json.id, json.position, json.chromosome, json.attribute, json.effect, json.dominance);
 
 }
 
-function l(object) {
+l = function(object) {
 	if (dolog)
 		console.log(object);
 }
 
-function rand(num) {
+rand = function(num) {
 	return Math.floor(Math.random() * num );
 }
 
-function rand_element(array) {
+rand_element = function(array) {
 	return array[rand(array.length) ];
 }
 
-function rand_empty(array, len) {
+rand_empty = function(array, len) {
 	for (var i = 0; i < len; i++) {
 		var x = rand(len);
 		if (typeof array[x] == 'undefined') {
@@ -69,11 +69,11 @@ function rand_empty(array, len) {
 	return false;
 }
 
-function rand_standard(base, multiply) {
+rand_standard = function(base, multiply) {
 	return multiply * ( (Math.random()*2-1)+(Math.random()*2-1)+(Math.random()*2-1) + (Math.random()*2-1)+(Math.random()*2-1)+(Math.random()*2-1) ) + base;
 }
 
-function time() {
+time = function() {
 	var time = new Date();
 	return time.getTime();
 }

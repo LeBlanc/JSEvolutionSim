@@ -2,7 +2,7 @@
  * Habitat Class
  */
 
-function Habitat(environment, x ,y, moisture, height, temperature, soil) {
+Habitat = function(environment, x ,y, moisture, height, temperature, soil) {
 	this.x = x;
 	this.y = y;
 	this.moisture = moisture;
@@ -69,8 +69,8 @@ function Habitat(environment, x ,y, moisture, height, temperature, soil) {
 		this.type = this.get_type();
 		this.soil = this.get_soil();
 		this.color = this.get_color();
-		var canvas = document.getElementById('canvas');
-		this.ctx = canvas.getContext('2d');
+		//var canvas = document.getElementById('canvas');
+		//this.ctx = canvas.getContext('2d');
 		return this.type;
 	}
 	/*
@@ -143,12 +143,15 @@ function Habitat(environment, x ,y, moisture, height, temperature, soil) {
 		}
 	*/
 		if (this.organisms.length > 0 ) {
-			this.ctx.fillStyle = this.organisms[this.organisms.length - 1].color;
-			this.ctx.fillRect (this.x * 10 + 1, this.y * 10 + 1, 8, 8);
+			//this.ctx.fillStyle = this.organisms[this.organisms.length - 1].color;
+			//this.ctx.fillRect (this.x * 10 + 1, this.y * 10 + 1, 8, 8);
+			var org_color = this.organisms[this.organisms.length - 1].color;
 		} else {
-			this.ctx.fillStyle = this.color;  
-			this.ctx.fillRect (this.x * 10, this.y * 10, 10, 10);
+			//this.ctx.fillStyle = this.color;  
+			//this.ctx.fillRect (this.x * 10, this.y * 10, 10, 10);
+			var org_color = false;
 		}
+		return {"x": this.x, "y": this.y, "bcolor": this.color, "ocolor": org_color };
 	};
 
 	this.add_organism = function(org) {
@@ -171,7 +174,9 @@ function Habitat(environment, x ,y, moisture, height, temperature, soil) {
 		if (this.food < 5)
 			this.food += this.soil / 40.0;
 		if (this.changed)
-			this.render();
+			return this.render();
+		else
+			return false;
 	}
 
 	this.neighbors = function() {

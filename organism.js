@@ -1,4 +1,4 @@
-function Organism(id, species, pairs, habitat, size) {
+Organism = function(id, species, pairs, habitat, size) {
 	this.id = id;
 	this.species = species;
 	this.species.organisms.push(this);

@@ -1,16 +1,17 @@
-function Environment( x, y) {
+Environment = function( x, y) {
 	this.x = x;
 	this.y = y;
 	this.habitats = [];
+	this.rendered = [];
 	
-	this.generate = function(canvas_selector) {
+	this.generate = function() {
 		var moisture = this.random_sources(20, 40, 20, 140);
 		var mountains = this.random_sources(20, 80, 10, 60);
 		//var soil = this.random_sources(20, 40, 30, 120);
 		var temperature = this.random_sources(20, 40, 32, 120);
 	
-		var canvas = document.getElementById('canvas');
-		var ctx = canvas.getContext("2d");  
+		//var canvas = document.getElementById('canvas');
+		//var ctx = canvas.getContext("2d");  
 		
 		for (var xx = 0; xx < this.x; xx++) {
 			this.habitats[xx] = [];
@@ -23,8 +24,8 @@ function Environment( x, y) {
 				habitat.temperature = this.calculate_attribute(xx, yy, temperature, 0);
 				habitat.set_type();
 				this.habitats[xx][yy] = habitat;
-				ctx.fillStyle = habitat.get_color();  
-				ctx.fillRect (xx * 10, yy * 10, 10, 10);
+			//	ctx.fillStyle = habitat.get_color();  
+			//	ctx.fillRect (xx * 10, yy * 10, 10, 10);
 			}
 		}
 
@@ -76,13 +77,30 @@ function Environment( x, y) {
 		}
 	};
 
-	this.render = function() {
+	this.iterate = function() {
 		//document.getElementById('canvas').getContext('2d').clearRect(0,0,800,800);
+		var rendered = [];
 		for (var xx = 0; xx < this.x; xx++) {
 			for (var yy = 0; yy < this.y; yy++) {
-				this.habitats[xx][yy].iterate();
+				var render = this.habitats[xx][yy].iterate();
+				if (render) {
+					rendered.push(render);
+				}
 			}
 		}
+		this.rendered = rendered;
 	};
-
+	
+	this.render_all = function() {
+		var rendered = [];
+		for (var xx = 0; xx < this.x; xx++) {
+			for (var yy = 0; yy < this.y; yy++) {
+				var render = this.habitats[xx][yy].render();
+				if (render) {
+					rendered.push(render);
+				}
+			}
+		}
+		return rendered;
+	}
 }

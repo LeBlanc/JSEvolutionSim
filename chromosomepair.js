@@ -1,4 +1,4 @@
-function ChromosomePair(id, c1, c2) {
+ChromosomePair = function(id, c1, c2) {
 
 	this.id = id;
 	this.c1 = c1;

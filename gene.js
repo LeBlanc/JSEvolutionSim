@@ -1,4 +1,4 @@
-function Gene(id, position, attribute, effect, dominance) 
+Gene = function(id, position, attribute, effect, dominance) 
 {
 	this.id = id;
 	this.position = position;
