@@ -1,9 +1,9 @@
 <html>
 <head>
-<script type="text/javascript" src="jquery.js"></script>
 
-<link href="css/environment.css" media="screen" rel="stylesheet" type="text/css" /> 
-
+<link href="/css/environment.css" media="screen" rel="stylesheet" type="text/css" /> 
+<script src="/js/utils.js"></script>
+<script src="/js/render.js"></script>
 
 </head>
 
@@ -32,44 +32,15 @@
 	</div>
 </div>
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
-<script>
-	time = function() {
-		var time = new Date();
-		return time.getTime();
-	}
 
-
-  var socket = io.connect('http://localhost:3000');
-  socket.on('news', function (data) {
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
-
-	socket.on('render', function(data) {
-		render(data.data);
-	});
-	
-	var canvas = document.getElementById('canvas');
-	var ctx = canvas.getContext('2d');
-	function render(data) {
-		var t = time();
-		var xx = data.length - 1;
-		while (xx) {
-			var hab = data[xx];
-			ctx.fillStyle = hab.bcolor;  
-			ctx.fillRect (hab.x * 10, hab.y * 10, 10, 10);
-			if (hab.ocolor) {
-				ctx.fillStyle = hab.ocolor;
-				ctx.fillRect (hab.x * 10 + 1, hab.y * 10 + 1, 8, 8);
-			}
-			xx--;
-		}
-		console.log(time() - t);
-	}
-	
-	
-	
+<script type="application/javascript">
+var socket = io.connect('http://localhost:3000');
+var r = new Renderer();
+socket.on('render', function(data) {
+	r.render(data.data);
+});
 </script>
+
 
 </body>
 
