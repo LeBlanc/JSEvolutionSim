@@ -151,7 +151,7 @@ Habitat = function(environment, x ,y, moisture, height, temperature, soil) {
 			//this.ctx.fillRect (this.x * 10, this.y * 10, 10, 10);
 			var org_color = false;
 		}
-		return {"x": this.x, "y": this.y, "bcolor": this.color, "ocolor": org_color };
+		return {"x": this.x, "y": this.y, "b": this.color, "o": org_color };
 	};
 
 	this.add_organism = function(org) {
