@@ -30,7 +30,7 @@ io.sockets.on('connection', function (socket) {
 
 dolog = true;
 
-sim = new Simulation(100,80, io);
+sim = new Simulation(100,100, io);
 sim.init();
 var selected_habitat = false;
 
@@ -47,7 +47,7 @@ template3 = {
 		"mutation_rate": 0.005,
 		"longevity": 100,
 		"plant": 100,
-		"max_size":5,
+		"max_size":10,
 		'ideal_temperature': 70,
 		'ideal_moisture': 60,
 	}
@@ -68,7 +68,7 @@ template5 = {
 		"plant": 100,
 		"max_size":25,
 		'ideal_temperature': 50,
-		'ideal_moisture': 60,
+		'ideal_moisture': 40,
 	}
 }
 

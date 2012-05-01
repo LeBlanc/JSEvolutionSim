@@ -93,6 +93,7 @@ Species = function(id, input, environment, simulation)
 	this.remove_organism = function(org) {
 		var index = this.organisms.indexOf(org);
 		this.organisms.splice(index, 1);
+		this.sim.remove_organism(org);
 	};
 
 	this.random_organism = function() {
@@ -108,6 +109,10 @@ Species = function(id, input, environment, simulation)
 		stats['avg_size'] = this.average_size();
 		stats['population_size'] = this.organisms.length;
 		return stats;
+	}
+	
+	this.can_mate = function() {
+		return this.organisms.length < 5000;
 	}
 
 }

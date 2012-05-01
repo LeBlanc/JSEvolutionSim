@@ -6,7 +6,7 @@ Organism = function(id, species, pairs, habitat, size) {
 	this.attributes = {};
 	this.habitat = habitat;
 	this.age = 0; 
-	this.food = 1;
+	this.food = 10;
 	this.babies_had = 0;
 	this.parents = [];
 	this.children = [];
@@ -147,7 +147,7 @@ Organism.prototype.mating_match = function(partner) {
 }
 
 Organism.prototype.can_mate = function() {
-	if (this.age > this.attributes["mature_age"] && this.babies_had < this.attributes["virility"] && this.food > this.energy_maintenence() * 4.1 & this.food > 1 && rand(100) > 50)
+	if (this.age > this.attributes["mature_age"] && this.babies_had < this.attributes["virility"] && this.food > this.energy_maintenence() * 4.1 & this.food > 1 && rand(100) > 50 && this.species.can_mate())
 		return true;
 	return false;
 }
@@ -336,7 +336,7 @@ Organism.prototype.metabolism = function() {
  *********************************************************************/
 
 Organism.prototype.can_pollenate = function() {
-	if (this.age > this.attributes["mature_age"] && this.food > 0.5 && rand(100) > 50)
+	if (this.age > this.attributes["mature_age"] && this.food > 0.5 && rand(100) > 50 && this.species.can_mate())
 		return true;
 	return false;
 }
@@ -366,6 +366,17 @@ Organism.prototype.plant_find_partner = function() {
 	if (!hab)
 		return;
 	this.sim.add_times('random_neighbor', time() - start);
+	
+	var i = hab.organisms.length - 1;
+	while (i > 0) {
+		var o = hab.organisms[i];
+		
+		if (this.mating_match(o))
+			return o;
+		i--;
+	}
+	
+	
 	for (var i = 0; i < hab.organisms.length; i++) {
 		var o = hab.organisms[i];
 		if (this.mating_match(o))
@@ -380,7 +391,7 @@ Organism.prototype.photosynthesize = function() {
 	var e = this.energy_maintenence();
 	var temp_diff = this.attributes['ideal_temperature'] - this.habitat.temperature;
 	var moisture_diff = this.attributes['ideal_moisture'] - this.habitat.moisture;
-	var diff = 10.0 / Math.max(1, Math.sqrt( temp_diff * temp_diff + moisture_diff * moisture_diff));
+	var diff = 10.0 / Math.max(1, 1 * Math.sqrt( temp_diff * temp_diff + moisture_diff * moisture_diff));
 	var shade = Math.max(0, this.habitat.shade - this.size);
 	this.food += this.size * diff - shade;
 	this.sim.add_times('photosynthesize', time() - start);

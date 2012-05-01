@@ -33,6 +33,12 @@
 </div>
 <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 <script>
+	time = function() {
+		var time = new Date();
+		return time.getTime();
+	}
+
+
   var socket = io.connect('http://localhost:3000');
   socket.on('news', function (data) {
     console.log(data);
@@ -46,7 +52,7 @@
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext('2d');
 	function render(data) {
-		
+		var t = time();
 		var xx = data.length - 1;
 		while (xx) {
 			var hab = data[xx];
@@ -58,6 +64,7 @@
 			}
 			xx--;
 		}
+		console.log(time() - t);
 	}
 	
 	
