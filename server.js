@@ -124,6 +124,7 @@ template1 = {
 		"longevity": 400,
 		"herbivore": 100,
 		"max_size": 20,
+		'gestation_time': 10,
 	}
 }
 template7 = { 
@@ -140,6 +141,7 @@ template7 = {
 		"longevity": 800,
 		"herbivore": 100,
 		"max_size": 15,
+		"gestation_time": 5,
 	}
 }
 
@@ -175,7 +177,7 @@ for (var i = 0; i < 100; i++) {
 		add_organism_to_random(s5);
 		add_organism_to_random(s6);
 	}
-	for (var z = 0; z < 2; z++) {
+	for (var z = 0; z < 5; z++) {
 		add_organism_to_random(s1);
 		add_organism_to_random(s7);
 	}

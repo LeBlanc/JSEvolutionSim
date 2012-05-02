@@ -12,6 +12,7 @@ Organism = function(id, species, pairs, habitat, size) {
 	this.children = [];
 	this.size = size ? size : 1;
 	this.dead = false;
+	this.last_pregnancy = 0;
 
 	this.init();
 }
@@ -55,6 +56,8 @@ Organism.prototype.herbivore_behavior = function() {
 	}
 
 	this.metabolism();
+	
+	this.last_pregnancy += 1;
 }
 
 Organism.prototype.plant_behavior = function() { 
@@ -147,7 +150,7 @@ Organism.prototype.mating_match = function(partner) {
 }
 
 Organism.prototype.can_mate = function() {
-	if (this.age > this.attributes["mature_age"] && this.babies_had < this.attributes["virility"] && this.food > this.energy_maintenence() * 4.1 & this.food > 1 && rand(100) > 50 && this.species.can_mate())
+	if (this.age > this.attributes["mature_age"] && this.babies_had < this.attributes["virility"] && this.food > this.energy_maintenence() * 4.1 & this.food > 1 && rand(100) > 50 && this.species.can_mate() && this.last_pregnancy > this.attributes["gestation_time"])
 		return true;
 	return false;
 }
@@ -165,6 +168,7 @@ Organism.prototype.seek_mate = function() {
 				var food_to_baby = this.food - this.energy_maintenence() * 2.5;
 				this.food -= food_to_baby;
 				baby.food += food_to_baby;
+				this.last_pregnancy = 0;
 				return true;
 			}
 		}
