@@ -150,7 +150,7 @@ Organism.prototype.mating_match = function(partner) {
 }
 
 Organism.prototype.can_mate = function() {
-	if (this.age > this.attributes["mature_age"] && this.babies_had < this.attributes["virility"] && this.food > this.energy_maintenence() * 4.1 & this.food > 1 && rand(100) > 50 && this.species.can_mate() && this.last_pregnancy > this.attributes["gestation_time"])
+	if (this.age > this.attributes["mature_age"]  && this.last_pregnancy > this.attributes["gestation_time"] && this.food > this.energy_maintenence() * 4.1 & this.food > 1 && this.babies_had < this.attributes["virility"] && rand(100) > 50 && this.species.can_mate())
 		return true;
 	return false;
 }
