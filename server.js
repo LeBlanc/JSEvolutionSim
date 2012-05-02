@@ -42,14 +42,14 @@ template3 = {
 		"color_1": "230",
 		"color_2": "170",
 		"color_3": "250",
-		"mature_age": 5,
+		"mature_age": 2,
 		"virility": 90,
 		"mutation_rate": 0.005,
-		"longevity": 100,
+		"longevity": 50,
 		"plant": 100,
-		"max_size":10,
-		'ideal_temperature': 70,
-		'ideal_moisture': 60,
+		"max_size":5,
+		'ideal_temperature': 50,
+		'ideal_moisture': 40,
 	}
 }
 
