@@ -1,5 +1,5 @@
-#environment table { border-collapse:collapse; border-spacing:0px 0px; border-style:none; border:0px; float:left; }
-#habitat_info { float:right; width:240px; min-height:200px; border:1px solid black; margin-bottom:15px; }
+#environment  { border-collapse:collapse; border-spacing:0px 0px; border-style:none; border:0px; float:left; }
+#stats { float:left; width:240px; min-height:200px; border:1px solid black; margin-bottom:15px; margin-left:15px; }
 .info dt { width:80px; float:left; display:inline-block; text-align:right; }
 .info dd { width:120px; float:right; display:inline-block; text-align:left; }
 

@@ -14,6 +14,7 @@ Simulation = function(x, y, io) {
 	this.times.calculate_attributes = 0;
 	this.times.meiosis = 0;
 	this.run_time = 0;
+	this.population_levels = {};
 
 	this.add_organism = function(organism, habitat) {
 		organism.habitat = habitat;
@@ -57,18 +58,17 @@ Simulation = function(x, y, io) {
 		var render_time = time() - s;
 		this.turn += 1;
 		var run_time = time() - start_time;
-		if ( this.show_stats) {
-			l(this.turn + ": " + run_time);
-			l("render_time: " + render_time);
-			this.show_times();
-			this.show_population_levels();
-			l(" ");
-		}
+		this.add_times("run_time", run_time);
+		this.add_times("TURN: ", this.turn)
+
+		this.update_population_levels();
 		
 		this.run_time = run_time;
 		var z = time();
 		io.sockets.emit('render',{data: this.environment.rendered});
-		console.log("render_send: " + (time() - z));
+		this.add_times("render_send", time() - z);
+		
+		io.sockets.emit('stats', {data: { "times": this.times, "population_levels": this.population_levels }})
 		
 		//this.iteration = setTimeout("sim.run()", Math.max(400 - run_time, 50));
 	}
@@ -102,6 +102,13 @@ Simulation = function(x, y, io) {
 			other_total += this.species[i].organisms.length;
 		}
 		l("other total: " + other_total);
+	}
+	
+	this.update_population_levels = function() {
+		this.population_levels = {};
+		for (var i = 0; i < this.species.length; i++) {
+			this.population_levels[this.species[i].species_name] = this.species[i].organisms.length;
+		}
 	}
 
 	this.update_selected_display = function() {
