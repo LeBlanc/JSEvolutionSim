@@ -112,7 +112,7 @@ Species = function(id, input, environment, simulation)
 	}
 	
 	this.can_mate = function() {
-		return this.organisms.length < 5000;
+		return (rand(1000) / Math.max((this.organisms.length - 3000), 0)) > 1;
 	}
 
 }
