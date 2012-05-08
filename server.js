@@ -150,14 +150,15 @@ template2 = {
 	"chromosome_count": 10,
 	"attributes": {
 		"turn_speed": 350,
-		"color_1": "030",
-		"color_2": "170",
-		"color_3": "250",
-		"mature_age": 25,
-		"virility": 4,
+		"color_1": "001",
+		"color_2": "001",
+		"color_3": "001",
+		"mature_age": 50,
+		"virility": 8,
 		"mutation_rate": 0.005,
 		"longevity": 400,
 		"carnivore": 100,
+		"gestation_time":20,
 	}
 }
 s1 = new Species(1, template1, sim.environment, sim);
@@ -171,15 +172,19 @@ s7 = new Species(1, template7, sim.environment, sim);
 sim.species.push(s1, s2, s3, s4, s5, s6, s7);
 
 for (var i = 0; i < 100; i++) {
-	for (var z = 0; z < 30; z++) {
+	for (var z = 0; z < 40; z++) {
 		add_organism_to_random(s3);
 		add_organism_to_random(s4);
 		add_organism_to_random(s5);
 		add_organism_to_random(s6);
 	}
-	for (var z = 0; z < 5; z++) {
+	for (var z = 0; z < 8; z++) {
 		add_organism_to_random(s1);
 		add_organism_to_random(s7);
+	}
+	
+	for (var z = 0; z < 4; z++) {
+		add_organism_to_random(s2);
 	}
 }
 

@@ -36,7 +36,24 @@ Organism.prototype.run = function() {
 }
 
 Organism.prototype.carnivore_behavior = function() {
-
+	
+	if (this.can_mate()) {
+		this.seek_mate();
+	}
+	
+	if (this.hungry()) {
+		this.hunt();
+	}
+	
+	this.random_move();
+	
+	if (this.can_grow()) {
+		this.grow();
+	}
+	
+	this.metabolism();
+	
+	this.last_pregnancy += 1;
 }
 
 Organism.prototype.herbivore_behavior = function() {
@@ -332,6 +349,51 @@ Organism.prototype.energy_maintenence = function() {
 
 Organism.prototype.metabolism = function() {
 	this.food -= this.energy_maintenence();
+}
+
+/*********************************************************************
+ * CARNIVORE FUNCTIONS
+ *
+ *********************************************************************/
+
+Organism.prototype.hunt = function() {
+	var organisms = this.habitat.organisms;
+	var i = organisms.length - 1;
+	while (i > 0) {
+		var o = organisms[i];
+		if (o.attributes["herbivore"] > 10) {
+			this.food += o.size * 0.33;
+			o.die();
+			return;
+		}
+		i--;
+	}
+	return;
+	var neighbors = this.habitat.neighbors();
+	while (neighbors.length > 0) {
+		var hab = neighbors[rand(neighbors.length)];
+		for (var i = 0; i < hab.organisms.length; i++) {
+			if (hab.organisms[i].attributes['herbivore'] > 10) {
+				this.move_to_habitat(hab);
+				return true;
+				
+				var organisms = this.habitat.organisms;
+				var i = organisms.length - 1;
+				while (i > 0) {
+					var o = organisms[i];
+					if (o.attributes["herbivore"] > 10) {
+						this.food += o.size * 0.33;
+						o.die();
+						return true;
+					}
+					i--;
+				}
+			}
+		}
+		neighbors.splice(neighbors.indexOf(hab), 1);
+	}
+	this.random_move();
+	return false
 }
 
 /*********************************************************************
