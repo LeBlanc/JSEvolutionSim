@@ -62,8 +62,9 @@ Species = function(id, input, environment, simulation)
 
 	this.organism = function() {
 		var o = new Organism(this.sim.org_count, this, this.nucleus());
+		o.age = rand(o.attributes["mature_age"]) + 1;
 		o.size = 2;
-		o.food += 25;
+		o.food += 45;
 		o.sim = this.sim;
 		return o;
 	}
