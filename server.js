@@ -30,7 +30,7 @@ io.sockets.on('connection', function (socket) {
 
 dolog = true;
 
-sim = new Simulation(100,100, io);
+sim = new Simulation(090,090, io);
 sim.init();
 var selected_habitat = false;
 
