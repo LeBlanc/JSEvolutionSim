@@ -53,6 +53,10 @@ Organism.prototype.carnivore_behavior = function() {
 	
 	this.metabolism();
 	
+	/*if (this.food < this.energy_maintenence()) {
+		this.burn_fat();
+	}*/
+	
 	this.last_pregnancy += 1;
 }
 
@@ -73,6 +77,11 @@ Organism.prototype.herbivore_behavior = function() {
 	}
 
 	this.metabolism();
+	
+	/*if (this.food < this.energy_maintenence() && this.size > 0.7 * this.attributes["max_size"]) {
+		this.burn_fat();
+	} else {
+	}*/
 	
 	this.last_pregnancy += 1;
 }
@@ -351,6 +360,12 @@ Organism.prototype.metabolism = function() {
 	this.food -= this.energy_maintenence();
 }
 
+Organism.prototype.burn_fat = function() {
+	var burn = this.size * 0.10;
+	this.food += burn * 0.5;
+	this.size -= burn;
+}
+
 /*********************************************************************
  * CARNIVORE FUNCTIONS
  *
@@ -375,7 +390,7 @@ Organism.prototype.hunt = function() {
 		for (var i = 0; i < hab.organisms.length; i++) {
 			if (hab.organisms[i].attributes['herbivore'] > 10) {
 				this.move_to_habitat(hab);
-				return true;
+				
 				
 				var organisms = this.habitat.organisms;
 				var i = organisms.length - 1;
