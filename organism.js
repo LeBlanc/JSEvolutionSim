@@ -53,9 +53,9 @@ Organism.prototype.carnivore_behavior = function() {
 	
 	this.metabolism();
 	
-	/*if (this.food < this.energy_maintenence()) {
+	if (this.food < this.energy_maintenence()) {
 		this.burn_fat();
-	}*/
+	}
 	
 	this.last_pregnancy += 1;
 }
@@ -417,7 +417,7 @@ Organism.prototype.hunt = function() {
  *********************************************************************/
 
 Organism.prototype.can_pollenate = function() {
-	if (this.age > this.attributes["mature_age"] && this.food > 0.5 && rand(100) > 50 && this.species.can_mate())
+	if (this.age > this.attributes["mature_age"] && this.food > 0.5 && this.species.can_mate())
 		return true;
 	return false;
 }
