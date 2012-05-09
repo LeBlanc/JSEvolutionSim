@@ -94,6 +94,10 @@ Organism.prototype.plant_behavior = function() {
 	if (this.can_grow()) {
 		this.grow();
 	}
+	
+	if (this.food < this.energy_maintenence()) {
+		this.burn_fat();
+	}
 
 	this.photosynthesize();
 	this.metabolism();
