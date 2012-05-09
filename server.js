@@ -19,13 +19,45 @@ var viewdir = __dirname + '/views';
 
 app.listen(3000);
 app.use(express.static(__dirname + '/public'));
+app.use(express.bodyParser());
 
 app.get('/', function (req, res) {
   res.render(viewdir + '/index.ejs');
 });
 
 app.get('/species/create', function(req, res) {
-	res.render(viewdir + '/species/create.ejs')
+	var attributes = {
+		"turn_speed": 250,
+		"color_1": "230",
+		"color_2": "170",
+		"color_3": "250",
+		"mature_age": 2,
+		"virility": 90,
+		"mutation_rate": 0.005,
+		"longevity": 50,
+		"plant": 100,
+		"herbivore": 0,
+		"carnivore": 0,
+		"max_size":5,
+		'ideal_temperature': 50,
+		'ideal_moisture': 40,
+		'gestation_time': 10,
+	}
+	res.render(viewdir + '/species/create.ejs', { attributes: attributes })
+});
+
+app.post('/species/create', function(req, res) {
+	var template = {
+		"species_name": req.body.species_name,
+		"chromosome_count": req.body.chromosome_count,
+		"attributes": req.body.attributes
+	}
+	var s = new Species(10, template, sim.environment, sim);
+	sim.species.push(s);
+	for (var i = 0; i < 1000; i++) {
+		add_organism_to_random(s);
+	}
+	res.redirect('/');
 });
 
 io.sockets.on('connection', function (socket) {

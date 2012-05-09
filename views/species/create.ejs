@@ -1,1 +1,22 @@
-blah blah
+<h1>Create a new species</h1>
+<h3>but don't let it go to your head</h3>
+
+<form method="POST" action="/species/create">
+	<div>
+		<label>Species Name:</label>
+		<input type="text" name="species_name" value="GIANT ROBOT" />
+	</div>
+	<div>
+		<label>Chromosome count:</label>
+		<input type="text" name="chromosome_count" value="10" />
+	</div>
+	<% for (attribute in attributes) { %>
+		<div>
+			<label><%= attribute %>:</label>
+			<input type="text" name="attributes[<%= attribute %>]" value="<%= attributes[attribute]%>" />
+		</div>
+	<% } %>
+
+	<input type="submit" value="Create LIFE!">
+
+</form>
