@@ -15,12 +15,17 @@ require('./species.js').js
 
 io.set('log level', 1);
 
+var viewdir = __dirname + '/views';
 
 app.listen(3000);
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
+  res.render(viewdir + '/index.ejs');
+});
+
+app.get('/species/create', function(req, res) {
+	res.render(viewdir + '/species/create.ejs')
 });
 
 io.sockets.on('connection', function (socket) {
